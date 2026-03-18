@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Arcade Leaderboard</title>
+    
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+
+    <div class="scoreboard-container">
+        <h1>HIGH SCORES</h1>
+        
+        <ol id="scoreList"></ol>
+
+        <div class="add-score-form">
+            <input type="text" id="playerName" placeholder="NAME (MAX 8)" maxlength="8">
+            <input type="number" id="playerScore" placeholder="SCORE...">
+            <button onclick="submitScore()">ADD SCORE</button>
+            <button onclick="clearScores()" style="background-color: #95a5a6; box-shadow: 0px 4px 0px #7f8c8d;">RESET BOARD</button>
+        </div>
+    </div>
+
+    <script>
+        let highScores = JSON.parse(localStorage.getItem("arcadeScores")) || [];
+
+        function updateScoreBoard() {
+            const listElement = document.getElementById("scoreList");
+            listElement.innerHTML = ""; 
+
+            highScores.forEach(function(entry) {
+                const li = document.createElement("li");
+                li.innerHTML = `<span>${entry.name}</span> <span>${entry.score}</span>`;
+                listElement.appendChild(li);
+            });
+        }
+
+        function submitScore() {
+            let nameInput = document.getElementById("playerName").value.toUpperCase();
+            const scoreInput = parseInt(document.getElementById("playerScore").value);
+
+            if (nameInput === "" || isNaN(scoreInput)) {
+                alert("PLEASE ENTER VALID DATA");
+                return;
+            }
+
+            const newEntry = { name: nameInput, score: scoreInput };
+            highScores.push(newEntry);
+            
+            highScores.sort(function(a, b) { return b.score - a.score; });
+            highScores.splice(5);
+
+            localStorage.setItem("arcadeScores", JSON.stringify(highScores));
+
+            updateScoreBoard();
+            document.getElementById("playerName").value = "";
+            document.getElementById("playerScore").value = "";
+        }
+
+        function clearScores() {
+            localStorage.removeItem("arcadeScores");
+            highScores = [];
+            updateScoreBoard();
+        }
+
+        updateScoreBoard();
+    </script>
+
+</body>
+</html>
