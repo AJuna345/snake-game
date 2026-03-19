@@ -18,9 +18,56 @@
             right: 0;
             left: 0;
         }
+        
+        /* MOVED THESE STYLES INSIDE THE <style> TAG */
+        #gameOverScreen {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(44, 62, 80, 0.85);
+            color: white;
+            font-family: Helvetica, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        #gameOverScreen h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #009BFF;
+        }
+
+        #restartBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #009BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #restartBtn:hover {
+            background-color: #007acc;
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
+    
+    <div id="gameOverScreen" class="hidden">
+        <h1>GAME OVER</h1>
+        <p>Final Score: <span id="finalScore">0</span></p>
+        <button id="restartBtn">Play Again</button>
+    </div>
+
 <script>
     // 1. Setup Constants and Variables
     var COLS = 26,
@@ -40,7 +87,8 @@
         ctx,
         keystate,
         frames,
-        score;
+        score,
+        isGameOver; // ADDED: Variable to track game state
 
     // 2. The Grid System
     var grid = {
@@ -101,14 +149,12 @@
                 }
             }
         }
-        // Fixed: Math.floor prevents the array from going out of bounds
         var randpos = empty[Math.floor(Math.random() * empty.length)];
         grid.set(FRUIT, randpos.x, randpos.y);
     }
 
     // 5. Main Setup
     function main() {
-        // This dynamically creates the <canvas> tag for you!
         canvas = document.createElement("canvas");
         canvas.width = COLS * 20;
         canvas.height = ROWS * 20;
@@ -120,7 +166,6 @@
         frames = 0;
         keystate = {};
 
-        // Track key presses
         document.addEventListener("keydown", function(evt) {
             keystate[evt.keyCode] = true;
         });
@@ -134,6 +179,7 @@
 
     // 6. Game Initialization
     function init() {
+        isGameOver = false; // ADDED: Reset game over state
         score = 0;
         grid.init(EMPTY, COLS, ROWS);
         var sp = {x: Math.floor(COLS/2), y: ROWS-1};
@@ -144,8 +190,11 @@
 
     // 7. The Game Loop
     function loop() {
-        update();
-        draw();
+        // ADDED: Only update and draw if the game is NOT over
+        if (!isGameOver) {
+            update();
+            draw();
+        }
         window.requestAnimationFrame(loop, canvas);
     }
 
@@ -153,7 +202,6 @@
     function update() {
         frames++;
 
-        // Handle Keyboard input
         if (keystate[KEY_LEFT] && snake.direction !== RIGHT) {
             snake.direction = LEFT;
         }
@@ -167,7 +215,6 @@
             snake.direction = DOWN;
         }
 
-        // Control game speed (updates every 7 frames)
         if (frames % 7 === 0) {
             var nx = snake.last.x;
             var ny = snake.last.y;
@@ -179,12 +226,14 @@
                 case DOWN: ny++; break;
             }
 
-            // Game Over conditions (hits wall or itself)
+            // ADDED: New Game Over trigger logic
             if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
-                return init(); // Instantly restarts the game
+                isGameOver = true; // Stop the loop
+                document.getElementById("finalScore").innerText = score; // Update score on screen
+                document.getElementById("gameOverScreen").classList.remove("hidden"); // Show screen
+                return; // Exit the update block
             }
 
-            // Eat food
             if (grid.get(nx, ny) === FRUIT) {
                 score++;
                 setFood();
@@ -207,8 +256,8 @@
             for (var y = 0; y < grid.height; y++) {
                 switch (grid.get(x, y)) {
                     case EMPTY: ctx.fillStyle = "#fff"; break;
-                    case SNAKE: ctx.fillStyle = "#333"; break; // Dark grey snake
-                    case FRUIT: ctx.fillStyle = "#009BFF"; break; // Blue food
+                    case SNAKE: ctx.fillStyle = "#333"; break;
+                    case FRUIT: ctx.fillStyle = "#009BFF"; break;
                 }
                 ctx.fillRect(x * tw, y * th, tw, th);
             }
@@ -217,6 +266,12 @@
         ctx.fillStyle = "#000";
         ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
     }
+
+    // ADDED: Restart button event listener
+    document.getElementById("restartBtn").addEventListener("click", function() {
+        document.getElementById("gameOverScreen").classList.add("hidden"); // Hide screen
+        init(); // Restart game
+    });
 
     // Start the game
     main();
