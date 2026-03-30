@@ -292,6 +292,50 @@
 
     // Start the game
     main();
+    // PASTE AT THE BOTTOM OF YOUR JS FILE
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Name Saver
+    const nameInput = document.getElementById('playerName');
+    const saveBtn = document.getElementById('saveNameBtn');
+    const greeting = document.getElementById('greetingMessage');
+
+    const savedName = localStorage.getItem('snakePlayerName');
+    if (savedName) {
+        nameInput.value = savedName;
+        greeting.textContent = `Welcome back, ${savedName}!`;
+    }
+
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const currentName = nameInput.value.trim();
+            if (currentName !== "") {
+                localStorage.setItem('snakePlayerName', currentName);
+                greeting.textContent = `Name saved as ${currentName}!`;
+            }
+        });
+    }
+
+    // 2. Theme Changer
+    const themeSelect = document.getElementById('themeSelect');
+    if (themeSelect) {
+        const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
+        themeSelect.value = savedTheme;
+        document.body.className = `theme-${savedTheme}`;
+
+        themeSelect.addEventListener('change', (event) => {
+            const selectedTheme = event.target.value;
+            document.body.className = `theme-${selectedTheme}`;
+            localStorage.setItem('snakeTheme', selectedTheme);
+        });
+    }
+});
+    // Inside your drawing function:
+const computedStyle = getComputedStyle(document.body);
+const currentSnakeColor = computedStyle.getPropertyValue('--snake-color').trim();
+
+// Use the dynamic color to draw the snake
+ctx.fillStyle = currentSnakeColor; 
+// ctx.fillRect(x, y, width, height); <-- Your existing drawing code
 </script>
 </body>
 </html>
