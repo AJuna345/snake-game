@@ -248,6 +248,23 @@
     }
 
     // 9. Draw Everything
+    <div class="game-settings" style="margin-bottom: 20px;">
+    <div>
+        <label for="playerName"><strong>Player Name:</strong></label>
+        <input type="text" id="playerName" placeholder="Enter your name">
+        <button id="saveNameBtn" class="btn btn-sm" style="background-color: #8e4fd6; color: white;">Save</button>
+        <span id="greetingMessage" style="margin-left: 10px; font-weight: bold;"></span>
+    </div>
+    
+    <div style="margin-top: 10px;">
+        <label for="themeSelect"><strong>Select Theme:</strong></label>
+        <select id="themeSelect">
+            <option value="classic">Classic Green</option>
+            <option value="dark">Dark Mode</option>
+            <option value="neon">Neon</option>
+        </select>
+    </div>
+</div>
     function draw() {
         var tw = canvas.width / grid.width;
         var th = canvas.height / grid.height;
