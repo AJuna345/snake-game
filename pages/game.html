@@ -19,7 +19,7 @@
         body.theme-dark {
             --bg-color: #222222;
             --text-color: #ffffff;
-            --snake-color: #8e4fd6; /* Purple */
+            --snake-color: #8e4fd6;
             --canvas-bg: #111111;
             --border-color: #8e4fd6;
         }
@@ -27,7 +27,7 @@
         body.theme-neon {
             --bg-color: #000000;
             --text-color: #00ffff;
-            --snake-color: #ff00ff; /* Pink */
+            --snake-color: #ff00ff;
             --canvas-bg: #000000;
             --border-color: #00ffff;
         }
@@ -120,7 +120,12 @@
         </nav>
     </header>
 
-    <div id="game-section" style="margin-top: 20px;">
+    <div id="startScreen" style="margin: 60px auto;">
+        <h2>Ready to Play?</h2>
+        <button id="startBtn" class="arcade-button" style="background-color: #28a745; border-color: #1e7e34; box-shadow: 0px 6px 0px #1e7e34;">START GAME</button>
+    </div>
+
+    <div id="game-section" class="hidden" style="margin-top: 20px;">
         <div class="game-settings">
             <div style="margin-bottom: 10px;">
                 <label for="playerName"><strong>Player Name:</strong></label>
@@ -137,10 +142,6 @@
                     <option value="neon">Neon</option>
                 </select>
             </div>
-        </div>
-
-        <div id="startScreen" style="margin: 40px auto;">
-            <button id="startBtn" class="arcade-button" style="background-color: #28a745; border-color: #1e7e34; box-shadow: 0px 6px 0px #1e7e34;">START GAME</button>
         </div>
 
         <div id="gameOverScreen" class="hidden">
@@ -205,13 +206,14 @@
                 if (grid.get(x, y) === EMPTY) { empty.push({x: x, y: y}); }
             }
         }
-        if (empty.length === 0) return; // Prevent errors if board is full
+        if (empty.length === 0) return; 
         var randpos = empty[Math.floor(Math.random() * empty.length)];
         grid.set(FRUIT, randpos.x, randpos.y);
     }
 
     // 5. Main Setup
     function main() {
+        // Create the canvas element ONLY after the start button is pushed
         canvas = document.createElement("canvas");
         canvas.width = COLS * 20;
         canvas.height = ROWS * 20;
@@ -366,17 +368,20 @@
             
             setTimeout(() => {
                 updateThemeColors(); 
-                // Only redraw if the game has actually started (canvas exists)
-                if (canvas && ctx) {
-                    draw();
-                }
+                if (canvas && ctx) draw();
             }, 50);
         });
     }
 
-    // NEW: Wait for Start Button before running the game
+   
     document.getElementById("startBtn").addEventListener("click", function() {
+  
         document.getElementById("startScreen").classList.add("hidden");
+        
+       
+        document.getElementById("game-section").classList.remove("hidden");
+        
+       
         main();
     });
 
