@@ -11,60 +11,75 @@
     <div class="scoreboard-container">
         <h1>HIGH SCORES</h1>
         
-        <ol id="scoreList"></ol>
+       // --- LEADERBOARD LOGIC ---
 
-        <div class="add-score-form">
-            <input type="text" id="playerName" placeholder="NAME (MAX 8)" maxlength="8">
-            <input type="number" id="playerScore" placeholder="SCORE...">
-            <button onclick="submitScore()">ADD SCORE</button>
-            <button onclick="clearScores()" style="background-color: #95a5a6; box-shadow: 0px 4px 0px #7f8c8d;">RESET BOARD</button>
-        </div>
-    </div>
+function saveHighScore() {
+   
+    let playerName = document.getElementById('playerName').value.trim();
+    if (playerName === "") {
+        playerName = "Anonymous";
+    }
 
-    <script>
-        let highScores = JSON.parse(localStorage.getItem("arcadeScores")) || [];
+ 
+    let highScores = JSON.parse(localStorage.getItem('snakeHighScores')) || [];
 
-        function updateScoreBoard() {
-            const listElement = document.getElementById("scoreList");
-            listElement.innerHTML = ""; 
+    // 3. Add the new score to the list
+    highScores.push({ name: playerName, score: score });
 
-            highScores.forEach(function(entry) {
-                const li = document.createElement("li");
-                li.innerHTML = `<span>${entry.name}</span> <span>${entry.score}</span>`;
-                listElement.appendChild(li);
-            });
-        }
+    // 4. Sort the list from highest score to lowest score
+    highScores.sort((a, b) => b.score - a.score);
 
-        function submitScore() {
-            let nameInput = document.getElementById("playerName").value.toUpperCase();
-            const scoreInput = parseInt(document.getElementById("playerScore").value);
+    // 5. Keep only the top 5 scores
+    highScores = highScores.slice(0, 5);
 
-            if (nameInput === "" || isNaN(scoreInput)) {
-                alert("PLEASE ENTER VALID DATA");
-                return;
-            }
+    // 6. Save the newly sorted list back to local storage
+    localStorage.setItem('snakeHighScores', JSON.stringify(highScores));
 
-            const newEntry = { name: nameInput, score: scoreInput };
-            highScores.push(newEntry);
-            
-            highScores.sort(function(a, b) { return b.score - a.score; });
-            highScores.splice(5);
+    // 7. Update the screen
+    updateLeaderboardDisplay();
+}
 
-            localStorage.setItem("arcadeScores", JSON.stringify(highScores));
+function updateLeaderboardDisplay() {
+    const listElement = document.getElementById('leaderboardList');
+    let highScores = JSON.parse(localStorage.getItem('snakeHighScores')) || [];
 
-            updateScoreBoard();
-            document.getElementById("playerName").value = "";
-            document.getElementById("playerScore").value = "";
-        }
+    // Clear the current list HTML
+    listElement.innerHTML = "";
 
-        function clearScores() {
-            localStorage.removeItem("arcadeScores");
-            highScores = [];
-            updateScoreBoard();
-        }
+    // If there are no scores, show a default message
+    if (highScores.length === 0) {
+        listElement.innerHTML = "<li>No scores yet! Be the first.</li>";
+        return;
+    }
 
-        updateScoreBoard();
-    </script>
+    // Loop through the scores and create an HTML list item for each one
+    highScores.forEach((entry, index) => {
+        const listItem = document.createElement('li');
+        
+        // Add a gold medal emoji to the #1 spot
+        let rank = `#${index + 1}`;
+        if (index === 0) rank = "🥇"; 
+        if (index === 1) rank = "🥈";
+        if (index === 2) rank = "🥉";
 
-</body>
-</html>
+        listItem.innerHTML = `<strong>${rank} ${entry.name}</strong>: ${entry.score}`;
+        listElement.appendChild(listItem);
+    });
+}
+
+// Add the event listener for the Clear button
+document.getElementById('clearScoresBtn').addEventListener('click', function() {
+    localStorage.removeItem('snakeHighScores');
+    updateLeaderboardDisplay();
+});
+        // Inside your update() function:
+if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
+    isGameOver = true; 
+    document.getElementById("finalScore").innerText = score; 
+    document.getElementById("gameOverScreen").classList.remove("hidden"); 
+    
+    // NEW: Save the score when they die!
+    saveHighScore(); 
+    
+    return; 
+}
