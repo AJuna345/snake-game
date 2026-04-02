@@ -1,307 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-   </head>
-<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNCAFFEINATED - Snake Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* Theme CSS Variables */
+        :root, body.theme-classic {
+            --bg-color: #ecf0f1;
+            --text-color: #333333;
+            --snake-color: #28a745;
+            --canvas-bg: #ffffff;
+            --border-color: #333333;
+        }
 
-    <h1>Welcome to My Website</h1>
-    <p>Press the button below to play the game</p>
-    
-    <a href="pages/game.html" class="arcade-button">Play the Snake Game</a>
+        body.theme-dark {
+            --bg-color: #222222;
+            --text-color: #ffffff;
+            --snake-color: #8e4fd6; /* Purple */
+            --canvas-bg: #111111;
+            --border-color: #8e4fd6;
+        }
 
-<header class="py-4 bg-light border-bottom">
-        <div class="text-center mb-4">
-            <div class="d-flex justify-content-center align-items-center gap-3">
-                <h1 class="display-5 fw-bold site-title m-0">UNCAFFEINATED</h1>
-            </div>
-            <p class="text-muted fst-italic mt-2 mb-0">Low Stress News</p>
-        </div>
-        <nav>
-            <ul class="d-flex justify-content-center gap-4 list-unstyled mb-0 fw-semibold">
-                <li><a href="pages/how-play.html" class="text-dark text-decoration-none">ABOUT ME</a></li>
-                <li><a href="index.html" class="text-dark text-decoration-none">CONTACT ME</a></li>
-                <li><a href="pages/my-work.html" class="text-dark text-decoration-none">MY WORK</a></li>
-            </ul>
-        </nav>
-    
-    </header>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #ecf0f1;
-            padding-top: 50px;
-        }
-        
-        /* The CSS for the new Arcade Button */
-        .arcade-button {
-            display: inline-block;
-            background-color: #e74c3c; /* Red background */
-            color: white; /* White text */
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            text-decoration: none; /* Removes the underline */
-            border-radius: 8px; /* Rounds the corners */
-            border: 4px solid #c0392b; /* Dark red border */
-            box-shadow: 0px 6px 0px #c0392b; /* Creates the 3D bottom edge */
-            transition: all 0.1s; /* Makes the click animation smooth */
-            margin-top: 20px;
-        }
+        body.theme-neon {
+            --bg-color: #000000;
+            --text-color: #00ffff;
+            --snake-color: #ff00ff; /* Pink */
+            --canvas-bg: #000000;
+            --border-color: #00ffff;
+        }
 
-        /* Makes the button physically "press down" when clicked */
-        .arcade-button:active {
-            box-shadow: 0px 0px 0px #c0392b;
-            transform: translateY(6px);
-        }
-        
-        /* Brightens the button when you hover your mouse over it */
-        .arcade-button:hover {
-            background-color: #ff5e4d;
-        }
-    </style>
-<body>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0;
+            padding-bottom: 50px;
+        }
+        
+        .arcade-button {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 4px solid #c0392b;
+            box-shadow: 0px 6px 0px #c0392b;
+            transition: all 0.1s;
+            margin-top: 20px;
+        }
 
-    <div class="game-settings">
-        <div>
-            <label for="playerName"><strong>Player Name:</strong></label>
-            <input type="text" id="playerName" placeholder="Enter your name">
-            <button id="saveNameBtn" style="background-color: #8e4fd6; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Save</button>
-            <span id="greetingMessage" style="margin-left: 10px; font-weight: bold;"></span>
-        </div>
-        
-        <div style="margin-top: 10px;">
-            <label for="themeSelect"><strong>Select Theme:</strong></label>
-            <select id="themeSelect">
-                <option value="classic">Classic Green</option>
-                <option value="dark">Dark Mode</option>
-                <option value="neon">Neon</option>
-            </select>
-        </div>
-    </div>
+        .arcade-button:active {
+            box-shadow: 0px 0px 0px #c0392b;
+            transform: translateY(6px);
+        }
+        
+        .arcade-button:hover {
+            background-color: #ff5e4d;
+            color: white;
+        }
 
-    <div id="gameOverScreen" class="hidden">
-        <h1>GAME OVER</h1>
-        <p>Final Score: <span id="finalScore">0</span></p>
-        <button id="restartBtn">Play Again</button>
-    </div>
+        .game-settings {
+            margin: 20px auto;
+            padding: 15px;
+            background-color: var(--canvas-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            display: inline-block;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 5px solid var(--border-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: border-color 0.3s ease;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #gameOverScreen {
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            border: 2px solid #ff4444;
+            border-radius: 8px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="theme-classic">
+
+    <header class="py-4 bg-light border-bottom" style="background-color: var(--canvas-bg) !important;">
+        <div class="text-center mb-4">
+            <div class="d-flex justify-content-center align-items-center gap-3">
+                <h1 class="display-5 fw-bold site-title m-0" style="color: var(--text-color);">UNCAFFEINATED</h1>
+            </div>
+            <p class="text-muted fst-italic mt-2 mb-0" style="color: var(--text-color) !important;">Low Stress News</p>
+        </div>
+        <nav>
+            <ul class="d-flex justify-content-center gap-4 list-unstyled mb-0 fw-semibold">
+                <li><a href="pages/how-play.html" style="color: var(--text-color); text-decoration: none;">ABOUT ME</a></li>
+                <li><a href="index.html" style="color: var(--text-color); text-decoration: none;">CONTACT ME</a></li>
+                <li><a href="pages/my-work.html" style="color: var(--text-color); text-decoration: none;">MY WORK</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1 class="mt-4">Welcome to My Website</h1>
+    <p>Press the button below to play the game</p>
+    <a href="#game-section" class="arcade-button">Play the Snake Game</a>
+
+    <div id="game-section" style="margin-top: 40px;">
+        <div class="game-settings">
+            <div style="margin-bottom: 10px;">
+                <label for="playerName"><strong>Player Name:</strong></label>
+                <input type="text" id="playerName" placeholder="Enter your name">
+                <button id="saveNameBtn" style="background-color: #8e4fd6; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Save</button>
+                <span id="greetingMessage" style="margin-left: 10px; font-weight: bold;"></span>
+            </div>
+            
+            <div>
+                <label for="themeSelect"><strong>Select Theme:</strong></label>
+                <select id="themeSelect">
+                    <option value="classic">Classic Green</option>
+                    <option value="dark">Dark Mode</option>
+                    <option value="neon">Neon</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="gameOverScreen" class="hidden">
+            <h1 style="color: #ff4444;">GAME OVER</h1>
+            <p>Final Score: <span id="finalScore" style="font-weight: bold; font-size: 1.2rem;">0</span></p>
+            <button id="restartBtn" class="arcade-button" style="margin-top: 10px;">Play Again</button>
+        </div>
+    </div>
 
 <script>
-    // 1. Setup Constants and Variables
-    var COLS = 26, ROWS = 26,
-        EMPTY = 0, SNAKE = 1, FRUIT = 2,
-        LEFT  = 0, UP    = 1, RIGHT = 2, DOWN  = 3,
-        KEY_LEFT  = 37, KEY_UP    = 38, KEY_RIGHT = 39, KEY_DOWN  = 40,
-        canvas, ctx, keystate, frames, score, isGameOver; 
+    // 1. Setup Constants and Variables
+    var COLS = 26, ROWS = 26,
+        EMPTY = 0, SNAKE = 1, FRUIT = 2,
+        LEFT  = 0, UP    = 1, RIGHT = 2, DOWN  = 3,
+        KEY_LEFT  = 37, KEY_UP    = 38, KEY_RIGHT = 39, KEY_DOWN  = 40,
+        canvas, ctx, keystate, frames, score, isGameOver; 
 
-    // Cached Theme Colors (Fixes the lag bug)
-    var currentSnakeColor = "#28a745";
-    var currentCanvasBg = "#fff";
-    var currentTextColor = "#333";
+    // Cached Theme Colors
+    var currentSnakeColor = "#28a745";
+    var currentCanvasBg = "#ffffff";
+    var currentTextColor = "#333333";
 
-    function updateThemeColors() {
-        const computedStyle = getComputedStyle(document.body);
-        currentSnakeColor = computedStyle.getPropertyValue('--snake-color').trim();
-        currentCanvasBg = computedStyle.getPropertyValue('--canvas-bg').trim();
-        currentTextColor = computedStyle.getPropertyValue('--text-color').trim() || "#000";
-    }
+    function updateThemeColors() {
+        const computedStyle = getComputedStyle(document.body);
+        currentSnakeColor = computedStyle.getPropertyValue('--snake-color').trim() || "#28a745";
+        currentCanvasBg = computedStyle.getPropertyValue('--canvas-bg').trim() || "#ffffff";
+        currentTextColor = computedStyle.getPropertyValue('--text-color').trim() || "#333333";
+    }
 
-    // 2. The Grid System
-    var grid = {
-        width: null, height: null, _grid: null,
-        init: function(d, c, r) {
-            this.width = c; this.height = r; this._grid = [];
-            for (var x = 0; x < c; x++) {
-                this._grid.push([]);
-                for (var y = 0; y < r; y++) { this._grid[x].push(d); }
-            }
-        },
-        set: function(val, x, y) { this._grid[x][y] = val; },
-        get: function(x, y) { return this._grid[x][y]; }
-    };
+    // 2. The Grid System
+    var grid = {
+        width: null, height: null, _grid: null,
+        init: function(d, c, r) {
+            this.width = c; this.height = r; this._grid = [];
+            for (var x = 0; x < c; x++) {
+                this._grid.push([]);
+                for (var y = 0; y < r; y++) { this._grid[x].push(d); }
+            }
+        },
+        set: function(val, x, y) { this._grid[x][y] = val; },
+        get: function(x, y) { return this._grid[x][y]; }
+    };
 
-    // 3. The Snake Object
-    var snake = {
-        direction: null, last: null, _queue: null,
-        init: function(d, x, y) {
-            this.direction = d; this._queue = []; this.insert(x, y);
-        },
-        insert: function(x, y) {
-            this._queue.unshift({x: x, y: y});
-            this.last = this._queue[0];
-        },
-        remove: function() { return this._queue.pop(); }
-    };
+    // 3. The Snake Object
+    var snake = {
+        direction: null, last: null, _queue: null,
+        init: function(d, x, y) {
+            this.direction = d; this._queue = []; this.insert(x, y);
+        },
+        insert: function(x, y) {
+            this._queue.unshift({x: x, y: y});
+            this.last = this._queue[0];
+        },
+        remove: function() { return this._queue.pop(); }
+    };
 
-    // 4. Food Generator
-    function setFood() {
-        var empty = [];
-        for (var x = 0; x < grid.width; x++) {
-            for (var y = 0; y < grid.height; y++) {
-                if (grid.get(x, y) === EMPTY) { empty.push({x: x, y: y}); }
-            }
-        }
-        var randpos = empty[Math.floor(Math.random() * empty.length)];
-        grid.set(FRUIT, randpos.x, randpos.y);
-    }
+    // 4. Food Generator
+    function setFood() {
+        var empty = [];
+        for (var x = 0; x < grid.width; x++) {
+            for (var y = 0; y < grid.height; y++) {
+                if (grid.get(x, y) === EMPTY) { empty.push({x: x, y: y}); }
+            }
+        }
+        if (empty.length === 0) return; // Prevent errors if board is full
+        var randpos = empty[Math.floor(Math.random() * empty.length)];
+        grid.set(FRUIT, randpos.x, randpos.y);
+    }
 
-    // 5. Main Setup
-    function main() {
-        canvas = document.createElement("canvas");
-        canvas.width = COLS * 20;
-        canvas.height = ROWS * 20;
-        ctx = canvas.getContext("2d");
-        document.body.appendChild(canvas);
-        ctx.font = "12px Helvetica";
-        frames = 0;
-        keystate = {};
+    // 5. Main Setup
+    function main() {
+        canvas = document.createElement("canvas");
+        canvas.width = COLS * 20;
+        canvas.height = ROWS * 20;
+        ctx = canvas.getContext("2d");
+        
+        // Append canvas inside the game section rather than the bottom of the body
+        document.getElementById("game-section").appendChild(canvas);
+        
+        ctx.font = "bold 14px Arial";
+        frames = 0;
+        keystate = {};
 
-        document.addEventListener("keydown", function(evt) {
-            // FIX: Ignore arrow keys if the user is typing their name
-            if (document.activeElement.tagName === "INPUT") return;
+        document.addEventListener("keydown", function(evt) {
+            // Ignore arrow keys if the user is typing their name
+            if (document.activeElement.tagName === "INPUT") return;
 
-            if([37, 38, 39, 40].indexOf(evt.keyCode) > -1) {
-                evt.preventDefault();
-            }
-            keystate[evt.keyCode] = true;
-        });
-        document.addEventListener("keyup", function(evt) {
-            delete keystate[evt.keyCode];
-        });
+            if([37, 38, 39, 40].indexOf(evt.keyCode) > -1) {
+                evt.preventDefault();
+            }
+            keystate[evt.keyCode] = true;
+        });
+        
+        document.addEventListener("keyup", function(evt) {
+            delete keystate[evt.keyCode];
+        });
 
-        init();
-        loop();
-    }
+        init();
+        loop();
+    }
 
-    // 6. Game Initialization
-    function init() {
-        isGameOver = false; 
-        score = 0;
-        grid.init(EMPTY, COLS, ROWS);
-        var sp = {x: Math.floor(COLS/2), y: ROWS-1};
-        snake.init(UP, sp.x, sp.y);
-        grid.set(SNAKE, sp.x, sp.y);
-        setFood();
-    }
+    // 6. Game Initialization
+    function init() {
+        isGameOver = false; 
+        score = 0;
+        updateThemeColors(); // Ensure colors are loaded before starting
+        grid.init(EMPTY, COLS, ROWS);
+        var sp = {x: Math.floor(COLS/2), y: ROWS-1};
+        snake.init(UP, sp.x, sp.y);
+        grid.set(SNAKE, sp.x, sp.y);
+        setFood();
+    }
 
-    // 7. The Game Loop
-    function loop() {
-        if (!isGameOver) {
-            update();
-            draw();
-        }
-        window.requestAnimationFrame(loop, canvas);
-    }
+    // 7. The Game Loop
+    function loop() {
+        if (!isGameOver) {
+            update();
+            draw();
+        }
+        window.requestAnimationFrame(loop);
+    }
 
-    // 8. Update Logic
-    function update() {
-        frames++;
+    // 8. Update Logic
+    function update() {
+        frames++;
 
-        if (keystate[KEY_LEFT] && snake.direction !== RIGHT) snake.direction = LEFT;
-        if (keystate[KEY_UP] && snake.direction !== DOWN) snake.direction = UP;
-        if (keystate[KEY_RIGHT] && snake.direction !== LEFT) snake.direction = RIGHT;
-        if (keystate[KEY_DOWN] && snake.direction !== UP) snake.direction = DOWN;
+        if (keystate[KEY_LEFT] && snake.direction !== RIGHT) snake.direction = LEFT;
+        if (keystate[KEY_UP] && snake.direction !== DOWN) snake.direction = UP;
+        if (keystate[KEY_RIGHT] && snake.direction !== LEFT) snake.direction = RIGHT;
+        if (keystate[KEY_DOWN] && snake.direction !== UP) snake.direction = DOWN;
 
-        if (frames % 7 === 0) {
-            var nx = snake.last.x;
-            var ny = snake.last.y;
+        if (frames % 7 === 0) {
+            var nx = snake.last.x;
+            var ny = snake.last.y;
 
-            switch (snake.direction) {
-                case LEFT: nx--; break;
-                case UP: ny--; break;
-                case RIGHT: nx++; break;
-                case DOWN: ny++; break;
-            }
+            switch (snake.direction) {
+                case LEFT: nx--; break;
+                case UP: ny--; break;
+                case RIGHT: nx++; break;
+                case DOWN: ny++; break;
+            }
 
-            if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
-                isGameOver = true; 
-                document.getElementById("finalScore").innerText = score; 
-                document.getElementById("gameOverScreen").classList.remove("hidden"); 
-                return; 
-            }
+            if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
+                isGameOver = true; 
+                document.getElementById("finalScore").innerText = score; 
+                document.getElementById("gameOverScreen").classList.remove("hidden"); 
+                return; 
+            }
 
-            if (grid.get(nx, ny) === FRUIT) {
-                score++;
-                setFood();
-            } else {
-                var tail = snake.remove();
-                grid.set(EMPTY, tail.x, tail.y);
-            }
+            if (grid.get(nx, ny) === FRUIT) {
+                score++;
+                setFood();
+            } else {
+                var tail = snake.remove();
+                grid.set(EMPTY, tail.x, tail.y);
+            }
 
-            grid.set(SNAKE, nx, ny);
-            snake.insert(nx, ny);
-        }
-    }
+            grid.set(SNAKE, nx, ny);
+            snake.insert(nx, ny);
+        }
+    }
 
-    // 9. Draw Everything (Optimized to stop lag)
-    function draw() {
-        var tw = canvas.width / grid.width;
-        var th = canvas.height / grid.height;
+    // 9. Draw Everything
+    function draw() {
+        var tw = canvas.width / grid.width;
+        var th = canvas.height / grid.height;
 
-        for (var x = 0; x < grid.width; x++) {
-            for (var y = 0; y < grid.height; y++) {
-                switch (grid.get(x, y)) {
-                    case EMPTY: ctx.fillStyle = currentCanvasBg; break;
-                    case SNAKE: ctx.fillStyle = currentSnakeColor; break;
-                    case FRUIT: ctx.fillStyle = "#ff4444"; break; 
-                }
-                ctx.fillRect(x * tw, y * th, tw, th);
-            }
-        }
+        for (var x = 0; x < grid.width; x++) {
+            for (var y = 0; y < grid.height; y++) {
+                switch (grid.get(x, y)) {
+                    case EMPTY: ctx.fillStyle = currentCanvasBg; break;
+                    case SNAKE: ctx.fillStyle = currentSnakeColor; break;
+                    case FRUIT: ctx.fillStyle = "#ff4444"; break; 
+                }
+                ctx.fillRect(x * tw, y * th, tw, th);
+            }
+        }
 
-        ctx.fillStyle = currentTextColor;
-        ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
-    }
+        ctx.fillStyle = currentTextColor;
+        ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
+    }
 
-    // Event Listeners for Game Restart
-    document.getElementById("restartBtn").addEventListener("click", function() {
-        document.getElementById("gameOverScreen").classList.add("hidden"); 
-        init(); 
-    });
+    // Event Listeners for Game Restart
+    document.getElementById("restartBtn").addEventListener("click", function() {
+        document.getElementById("gameOverScreen").classList.add("hidden"); 
+        init(); 
+    });
 
-    // 10. LocalStorage Logic (Theme and Name Saver)
-    const nameInput = document.getElementById('playerName');
-    const saveBtn = document.getElementById('saveNameBtn');
-    const greeting = document.getElementById('greetingMessage');
+    // 10. LocalStorage Logic (Theme and Name Saver)
+    const nameInput = document.getElementById('playerName');
+    const saveBtn = document.getElementById('saveNameBtn');
+    const greeting = document.getElementById('greetingMessage');
 
-    const savedName = localStorage.getItem('snakePlayerName');
-    if (savedName) {
-        nameInput.value = savedName;
-        greeting.textContent = `Welcome back, ${savedName}!`;
-    }
+    const savedName = localStorage.getItem('snakePlayerName');
+    if (savedName) {
+        nameInput.value = savedName;
+        greeting.textContent = `Welcome back, ${savedName}!`;
+    }
 
-    if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
-            const currentName = nameInput.value.trim();
-            if (currentName !== "") {
-                localStorage.setItem('snakePlayerName', currentName);
-                greeting.textContent = `Name saved as ${currentName}!`;
-            }
-        });
-    }
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const currentName = nameInput.value.trim();
+            if (currentName !== "") {
+                localStorage.setItem('snakePlayerName', currentName);
+                greeting.textContent = `Name saved as ${currentName}!`;
+            }
+        });
+    }
 
-    const themeSelect = document.getElementById('themeSelect');
-    if (themeSelect) {
-        const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
-        themeSelect.value = savedTheme;
-        document.body.className = `theme-${savedTheme}`;
-        updateThemeColors(); // Fetch colors initially
+    const themeSelect = document.getElementById('themeSelect');
+    if (themeSelect) {
+        const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
+        themeSelect.value = savedTheme;
+        document.body.className = `theme-${savedTheme}`;
+        
+        // Wait a tiny bit for the DOM to apply the class before fetching colors
+        setTimeout(updateThemeColors, 50);
 
-        themeSelect.addEventListener('change', (event) => {
-            const selectedTheme = event.target.value;
-            document.body.className = `theme-${selectedTheme}`;
-            localStorage.setItem('snakeTheme', selectedTheme);
-            
-            // Re-fetch the colors ONLY when the dropdown is changed
-            updateThemeColors(); 
-        });
-    }
+        themeSelect.addEventListener('change', (event) => {
+            const selectedTheme = event.target.value;
+            document.body.className = `theme-${selectedTheme}`;
+            localStorage.setItem('snakeTheme', selectedTheme);
+            
+            // Re-fetch the colors and force a redraw
+            setTimeout(() => {
+                updateThemeColors(); 
+                draw();
+            }, 50);
+        });
+    }
 
-    // Start the game
-    main();
+    // Start the game
+    main();
 
 </script>
 </body>
 </html>
-fix this code
