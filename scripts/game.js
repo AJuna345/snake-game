@@ -226,7 +226,7 @@ if (themeSelect) {
     });
 }
 
-// 11. Start Game
+// 11. Start Game Logic
 document.getElementById("startBtn").addEventListener("click", function() {
     document.getElementById("startScreen").classList.add("hidden");
     document.getElementById("game-section").classList.remove("hidden");
