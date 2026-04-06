@@ -225,7 +225,20 @@ if (themeSelect) {
         }, 50);
     });
 }
+if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+        const currentName = nameInput.value.trim();
+        if (currentName !== "") {
+            localStorage.setItem('snakePlayerName', currentName);
+            greeting.textContent = `Name saved as ${currentName}!`;
 
+            // Secret Unlock Logic
+            if (currentName.toLowerCase() === "garfield") {
+                unlockGarfieldTheme();
+            }
+        }
+    });
+}
 // 11. Start Game Logic
 document.addEventListener("DOMContentLoaded", function() {
     const startBtn = document.getElementById("startBtn");
