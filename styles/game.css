@@ -94,3 +94,11 @@ canvas {
     border-radius: 8px;
     display: inline-block;
 }
+
+body.theme-garfield {
+    --bg-color: #ffbd69;      
+    --text-color: #543200;    
+    --snake-color: #ff8c00;   
+    --canvas-bg: #fff5e6;     
+    --border-color: #543200; 
+}
