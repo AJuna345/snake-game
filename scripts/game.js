@@ -136,7 +136,35 @@ function update() {
             isGameOver = true; 
             document.getElementById("finalScore").innerText = score; 
             document.getElementById("gameOverScreen").classList.remove("hidden"); 
-            
+            // Inside the Game Over check in update()
+if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
+    isGameOver = true;
+    
+    // SAVE SCORE LOGIC
+    saveHighScore(score);
+
+    document.getElementById("finalScore").innerText = score;
+    document.getElementById("gameOverScreen").classList.remove("hidden");
+    return;
+}
+
+function saveHighScore(latestScore) {
+    // Get the name from your nameInput field
+    const name = document.getElementById('playerName').value.trim() || "Anonymous";
+    
+    // Get existing scores or start a new list
+    let highScores = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
+    
+    // Add the new score
+    highScores.push({ name: name, score: latestScore });
+    
+    // Sort Highest to Lowest and keep only top 10
+    highScores.sort((a, b) => b.score - a.score);
+    highScores = highScores.slice(0, 10);
+    
+    // Save back to localStorage
+    localStorage.setItem('snakeLeaderboard', JSON.stringify(highScores));
+}
             // Screen reader accessibility announcement
             const announcer = document.getElementById("game-announcer");
             if (announcer) {
