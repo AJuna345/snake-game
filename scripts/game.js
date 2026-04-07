@@ -217,7 +217,20 @@ if (savedName) {
         unlockGarfieldTheme();
     }
 }
+const speedSelect = document.getElementById('speedSelect');
+if (speedSelect) {
+    // Load saved difficulty if it exists
+    const savedSpeed = localStorage.getItem('snakeSpeed');
+    if (savedSpeed) {
+        speedSelect.value = savedSpeed;
+        speedValue = parseInt(savedSpeed);
+    }
 
+    speedSelect.addEventListener('change', (event) => {
+        speedValue = parseInt(event.target.value);
+        localStorage.setItem('snakeSpeed', speedValue);
+    });
+}
 if (saveBtn) {
     saveBtn.addEventListener('click', () => {
         const currentName = nameInput.value.trim();
