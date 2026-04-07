@@ -4,7 +4,9 @@ var COLS = 26, ROWS = 26,
     LEFT  = 0, UP    = 1, RIGHT = 2, DOWN  = 3,
     KEY_LEFT  = 37, KEY_UP    = 38, KEY_RIGHT = 39, KEY_DOWN  = 40,
     canvas, ctx, keystate, frames, score, isGameOver; 
-var speedValue = 7; // 
+
+var speedValue = 7; // Default speed
+
 // Cached Theme Colors
 var currentSnakeColor = "#28a745";
 var currentCanvasBg = "#ffffff";
@@ -64,7 +66,6 @@ function main() {
     canvas.height = ROWS * 20;
     ctx = canvas.getContext("2d");
     
-    // Updated for your new Bootstrap Column Layout
     var gameSection = document.getElementById("game-section");
     var gameOverDiv = document.getElementById("gameOverScreen");
     gameSection.insertBefore(canvas, gameOverDiv);
@@ -110,7 +111,7 @@ function loop() {
     window.requestAnimationFrame(loop);
 }
 
-// 8. Update Logic
+// 8. Update Logic - FIXED: Integrated speedValue correctly
 function update() {
     frames++;
 
@@ -119,7 +120,8 @@ function update() {
     if (keystate[KEY_RIGHT] && snake.direction !== LEFT) snake.direction = RIGHT;
     if (keystate[KEY_DOWN] && snake.direction !== UP) snake.direction = DOWN;
 
-    if (frames % 7 === 0) {
+    // Movement happens every 'speedValue' frames
+    if (frames % speedValue === 0) {
         var nx = snake.last.x;
         var ny = snake.last.y;
 
@@ -130,21 +132,9 @@ function update() {
             case DOWN: ny++; break;
         }
 
-function update() {
-    frames++;
-
-
-    if (frames % speedValue === 0) {
-        var nx = snake.last.x;
-        var ny = snake.last.y;
-        // ... (rest of the movement logic)
-    }
-}
         // Game Over Check
         if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
             isGameOver = true; 
-            
-            // SAVE SCORE LOGIC
             saveHighScore(score);
 
             document.getElementById("finalScore").innerText = score; 
@@ -207,8 +197,22 @@ document.getElementById("restartBtn").addEventListener("click", function() {
 const nameInput = document.getElementById('playerName');
 const saveBtn = document.getElementById('saveNameBtn');
 const greeting = document.getElementById('greetingMessage');
+const speedSelect = document.getElementById('speedSelect');
 
-// Load saved name and check for Garfield
+// Load saved speed settings
+if (speedSelect) {
+    const savedSpeed = localStorage.getItem('snakeSpeed');
+    if (savedSpeed) {
+        speedSelect.value = savedSpeed;
+        speedValue = parseInt(savedSpeed);
+    }
+    speedSelect.addEventListener('change', (event) => {
+        speedValue = parseInt(event.target.value);
+        localStorage.setItem('snakeSpeed', speedValue);
+    });
+}
+
+// Load saved name
 const savedName = localStorage.getItem('snakePlayerName');
 if (savedName) {
     nameInput.value = savedName;
@@ -217,20 +221,7 @@ if (savedName) {
         unlockGarfieldTheme();
     }
 }
-const speedSelect = document.getElementById('speedSelect');
-if (speedSelect) {
-    // Load saved difficulty if it exists
-    const savedSpeed = localStorage.getItem('snakeSpeed');
-    if (savedSpeed) {
-        speedSelect.value = savedSpeed;
-        speedValue = parseInt(savedSpeed);
-    }
 
-    speedSelect.addEventListener('change', (event) => {
-        speedValue = parseInt(event.target.value);
-        localStorage.setItem('snakeSpeed', speedValue);
-    });
-}
 if (saveBtn) {
     saveBtn.addEventListener('click', () => {
         const currentName = nameInput.value.trim();
