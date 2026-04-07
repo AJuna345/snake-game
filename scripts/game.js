@@ -4,7 +4,7 @@ var COLS = 26, ROWS = 26,
     LEFT  = 0, UP    = 1, RIGHT = 2, DOWN  = 3,
     KEY_LEFT  = 37, KEY_UP    = 38, KEY_RIGHT = 39, KEY_DOWN  = 40,
     canvas, ctx, keystate, frames, score, isGameOver; 
-
+var speedValue = 7; // 
 // Cached Theme Colors
 var currentSnakeColor = "#28a745";
 var currentCanvasBg = "#ffffff";
