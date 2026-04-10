@@ -4,6 +4,7 @@ var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
 var KEY_LEFT = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
 var canvas, ctx, keystate, frames, score, gameOver; 
 var speed = 7; // Default speed (Normal)
+var scoreMultiplier = 1; // Increase scores with higher difficulty levels/speeds
 
 // Cached Theme Colors
 var snakeColor = "#28a745";
@@ -140,7 +141,7 @@ function update() {
         }
 
         if (grid.get(x, y) === FOOD) {
-            score++;
+            score+=scoreMultiplier;
             setFood();
         } else {
             var tail = snake.remove();
@@ -204,6 +205,8 @@ if (speedSelect) {
         speed = parseInt(event.target.value);
         localStorage.setItem('snakeSpeed', speed);
     });
+
+    speedMultiplier = 10 - speed + 1;
 }
 
 // Load saved name
