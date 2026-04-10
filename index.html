@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- Easter Egg: If you hate monday's type Garfield as your name -->
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNCAFFEINATED - Home</title>
@@ -10,7 +10,7 @@
 </head>
     
 <body class="theme-classic">
-  <header class="py-4 bg-light border-bottom">
+  <header class="py-4 border-bottom">
       <div class="text-center mb-4">
           <div class="d-flex justify-content-center align-items-center gap-3">
               <h1 class="display-5 fw-bold site-title m-0">UNCAFFEINATED SNAKE GAME</h1>
@@ -19,10 +19,10 @@
       </div>
       <nav>
           <ul class="d-flex justify-content-center gap-4 list-unstyled mb-0 fw-semibold">
-              <li><a href="pages/how-play.html" class="text-dark text-decoration-none">How to play</a></li>
-              <li><a href="https://ajuna345.github.io/snake-game/" class="text-dark text-decoration-none">Play/Rest</a></li>
-               <li><a href="pages/leaderboard.html" class="text-dark text-decoration-none">Dev Profile</a></li>
-              <li><a href="pages/leaderboard.html" class="text-dark text-decoration-none">Leaderboard</a></li>
+              <li><a href="pages/how-play.html" class="text-decoration-none header-link">How to play</a></li>
+              <li><a href="https://ajuna345.github.io/snake-game/" class="text-decoration-none header-link">Play/Rest</a></li>
+               <li><a href="pages/leaderboard.html" class="text-decoration-none header-link">Dev Profile</a></li>
+              <li><a href="pages/leaderboard.html" class="text-decoration-none header-link">Leaderboard</a></li>
           </ul>
       </nav>
   </header>
@@ -69,7 +69,7 @@
                         <button id="saveNameBtn" class="btn btn-sm btn-primary mt-2 w-100" style="background-color: #8e4fd6; border: none;">Save Name</button>
                         <div id="greetingMessage" class="mt-2 small fw-bold text-center"></div>
                     </div>
-                    <div>
+                    <div class="mb-3">
                         <label for="themeSelect"><strong>Select Theme:</strong></label>
                         <select id="themeSelect" class="form-select form-select-sm">
                             <option value="classic">Classic</option>
@@ -77,33 +77,34 @@
                             <option value="neon">Neon</option>
                         </select>
                     </div>
+                    <div>
+                        <label for="speedSelect"><strong>Difficulty:</strong></label>
+                        <select id="speedSelect" class="form-select form-select-sm">
+                            <option value="10">Easy (Slow)</option>
+                            <option value="7" selected>Medium (Normal)</option>
+                            <option value="4">Hard (Fast)</option>
+                            <option value="2">Insane (Ultra Fast)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-      <div class="mb-3">
-    <label for="speedSelect"><strong>Difficulty:</strong></label>
-    <select id="speedSelect" class="form-select form-select-sm">
-        <option value="10">Easy (Slow)</option>
-        <option value="7" selected>Medium (Normal)</option>
-        <option value="4">Hard (Fast)</option>
-        <option value="2">Insane (Ultra Fast)</option>
-    </select>
-</div>
-</main>
-<footer class="mt-5 pt-4 border-top text-center">
-    <div class="d-flex justify-content-center gap-3">
-        <a href="https://github.com/AJuna345/snake-game" target="_blank" class="btn btn-outline-secondary btn-sm">
-            Game Repository on GitHub
-        </a>
-        <a href="https://github.com/AJuna345" target="_blank" class="btn btn-outline-secondary btn-sm">
-            GitHub Profile
-        </a>
-        <a href="https://ajuna345.github.io/AJuna345/" target="_blank" class="btn btn-outline-secondary btn-sm"> 
-            Dev Profile 
-        </a>
-    </div>
-</footer>
+  </main>
+
+  <footer class="mt-5 pt-4 border-top text-center">
+      <div class="d-flex justify-content-center gap-3">
+          <a href="https://github.com/AJuna345/snake-game" target="_blank" class="btn btn-outline-secondary btn-sm">
+              Game Repository on GitHub
+          </a>
+          <a href="https://github.com/AJuna345" target="_blank" class="btn btn-outline-secondary btn-sm">
+              GitHub Profile
+          </a>
+          <a href="https://ajuna345.github.io/AJuna345/" target="_blank" class="btn btn-outline-secondary btn-sm"> 
+              Dev Profile 
+          </a>
+      </div>
+  </footer>
   <script src="scripts/game.js"></script>
     
 </body>
