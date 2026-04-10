@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!leaderboardBody) return;
 
         // 1. Get scores from LocalStorage (change 'snakeScores' if you used a different key)
-        let scores = JSON.parse(localStorage.getItem('snakeScores')) || [];
-
+        let scores = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
+        
         // 2. Sort scores from highest to lowest
         scores.sort((a, b) => b.score - a.score);
 
