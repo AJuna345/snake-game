@@ -27,7 +27,7 @@ body.theme-neon {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Press Start 2P', 'Courier New', monospace;
     text-align: center;
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -37,6 +37,7 @@ body {
 }
 
 .arcade-button {
+    font-family: 'Press Start 2P', 'Courier New', monospace;
     display: inline-block;
     background-color: #e74c3c;
     color: white;
@@ -112,12 +113,15 @@ body.theme-garfield {
 
 /* Style the keyboard key icons */
 kbd {
+    font-family: 'Press Start 2P', 'Courier New', monospace;
     background-color: var(--border-color);
     color: var(--canvas-bg);
     padding: 2px 5px;
     font-size: 0.9rem;
 }
 footer .btn-outline-secondary {
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    font-size: 12px;
     color: var(--text-color);
     border-color: var(--border-color);
 }
@@ -126,3 +130,15 @@ footer .btn-outline-secondary:hover {
     background-color: var(--border-color);
     color: var(--canvas-bg);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
