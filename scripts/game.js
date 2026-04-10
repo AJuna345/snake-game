@@ -1,5 +1,5 @@
 var WIDTH = 26, HEIGHT = 26; // Width and height of the game board
-var EMPTY = 0, SNAKE = 1, FRUIT = 2;
+var EMPTY = 0, SNAKE = 1, FOOD = 2;
 var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
 var KEY_LEFT = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
 var canvas, ctx, keystate, frames, score, gameOver; 
@@ -51,7 +51,7 @@ function setFood() {
     }
     if (empty.length === 0) return; 
     var randpos = empty[Math.floor(Math.random() * empty.length)];
-    grid.set(FRUIT, randpos.x, randpos.y);
+    grid.set(FOOD, randpos.x, randpos.y);
 }
 
 function main() {
@@ -139,7 +139,7 @@ function update() {
             return; 
         }
 
-        if (grid.get(x, y) === FRUIT) {
+        if (grid.get(x, y) === FOOD) {
             score++;
             setFood();
         } else {
@@ -171,7 +171,7 @@ function draw() {
             switch (grid.get(x, y)) {
                 case EMPTY: ctx.fillStyle = canvasBg; break;
                 case SNAKE: ctx.fillStyle = snakeColor; break;
-                case FRUIT: ctx.fillStyle = "#ff4444"; break; 
+                case FOOD: ctx.fillStyle = "#ff4444"; break; 
             }
             ctx.fillRect(x * tw, y * th, tw, th);
         }
