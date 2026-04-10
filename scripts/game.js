@@ -1,4 +1,4 @@
-var COLS = 26, ROWS = 26; // Width and height of the game board
+var WIDTH = 26, HEIGHT = 26; // Width and height of the game board
 var EMPTY = 0, SNAKE = 1, FRUIT = 2;
 var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
 var KEY_LEFT = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
@@ -17,7 +17,6 @@ function updateThemeColors() {
     textColor = computedStyle.getPropertyValue('--text-color').trim() || "#333333";
 }
 
-// 2. The Grid System
 var grid = {
     width: null, height: null, _grid: null,
     init: function(d, c, r) {
@@ -31,7 +30,6 @@ var grid = {
     get: function(x, y) { return this._grid[x][y]; }
 };
 
-// 3. The Snake Object
 var snake = {
     direction: null, last: null, _queue: null,
     init: function(d, x, y) {
@@ -44,7 +42,6 @@ var snake = {
     remove: function() { return this._queue.pop(); }
 };
 
-// 4. Food Generator
 function setFood() {
     var empty = [];
     for (var x = 0; x < grid.width; x++) {
@@ -57,11 +54,10 @@ function setFood() {
     grid.set(FRUIT, randpos.x, randpos.y);
 }
 
-// 5. Main Setup
 function main() {
     canvas = document.createElement("canvas");
-    canvas.width = COLS * 20;
-    canvas.height = ROWS * 20;
+    canvas.width = WIDTH * 20;
+    canvas.height = HEIGHT * 20;
     ctx = canvas.getContext("2d");
     
     var gameSection = document.getElementById("game-section");
@@ -84,17 +80,16 @@ function main() {
         delete keystate[evt.keyCode];
     });
 
-    init();
+    initGame();
     playGame();
 }
 
-// 6. Game Initialization
-function init() {
+function initGame() {
     gameOver = false; 
     score = 0;
     updateThemeColors(); 
-    grid.init(EMPTY, COLS, ROWS);
-    var sp = {x: Math.floor(COLS/2), y: ROWS-1};
+    grid.init(EMPTY, WIDTH, HEIGHT);
+    var sp = {x: Math.floor(WIDTH/2), y: HEIGHT-1};
     snake.init(UP, sp.x, sp.y);
     grid.set(SNAKE, sp.x, sp.y);
     setFood();
@@ -105,6 +100,7 @@ function playGame() {
         update();
         draw();
     }
+    
     window.requestAnimationFrame(playGame);
 }
 
@@ -118,18 +114,18 @@ function update() {
 
     // Move the snake every N (speed) frames
     if (frames % speed === 0) {
-        var nx = snake.last.x;
-        var ny = snake.last.y;
+        var x = snake.last.x;
+        var y = snake.last.y;
 
         switch (snake.direction) {
-            case LEFT: nx--; break;
-            case RIGHT: nx++; break;
-            case UP: ny--; break;
-            case DOWN: ny++; break;
+            case LEFT: x--; break;
+            case RIGHT: x++; break;
+            case UP: y--; break;
+            case DOWN: y++; break;
         }
 
         // Game Over Check
-        if (nx < 0 || nx >= grid.width || ny < 0 || ny >= grid.height || grid.get(nx, ny) === SNAKE) {
+        if (x < 0 || x >= grid.width || y < 0 || y >= grid.height || grid.get(x, y) === SNAKE) {
             gameOver = true; 
             saveHighScore(score);
 
@@ -143,7 +139,7 @@ function update() {
             return; 
         }
 
-        if (grid.get(nx, ny) === FRUIT) {
+        if (grid.get(x, y) === FRUIT) {
             score++;
             setFood();
         } else {
@@ -151,8 +147,8 @@ function update() {
             grid.set(EMPTY, tail.x, tail.y);
         }
 
-        grid.set(SNAKE, nx, ny);
-        snake.insert(nx, ny);
+        grid.set(SNAKE, x, y);
+        snake.insert(x, y);
     }
 }
 
@@ -187,7 +183,7 @@ function draw() {
 // 10. Logic & Event Listeners
 document.getElementById("restartBtn").addEventListener("click", function() {
     document.getElementById("gameOverScreen").classList.add("hidden"); 
-    init(); 
+    initGame(); 
 });
 
 const nameInput = document.getElementById('playerName');
