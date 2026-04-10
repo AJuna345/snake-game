@@ -1,10 +1,9 @@
-// 1. Setup Constants and Variables
-var COLS = 26, ROWS = 26;
+var COLS = 26, ROWS = 26; // Width and height of the game board
 var EMPTY = 0, SNAKE = 1, FRUIT = 2;
 var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
-var KEY_LEFT  = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
+var KEY_LEFT = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
 var canvas, ctx, keystate, frames, score, isGameOver; 
-var speedValue = 7; // Default speed (Normal)
+var speed = 7; // Default speed (Normal)
 
 // Cached Theme Colors
 var currentSnakeColor = "#28a745";
@@ -110,29 +109,28 @@ function loop() {
     window.requestAnimationFrame(loop);
 }
 
-// 8. Update Logic - FIXED: Integrated speedValue correctly
 function update() {
     frames++;
 
     if (keystate[KEY_LEFT] && snake.direction !== RIGHT) snake.direction = LEFT;
-    if (keystate[KEY_UP] && snake.direction !== DOWN) snake.direction = UP;
     if (keystate[KEY_RIGHT] && snake.direction !== LEFT) snake.direction = RIGHT;
+    if (keystate[KEY_UP] && snake.direction !== DOWN) snake.direction = UP;
     if (keystate[KEY_DOWN] && snake.direction !== UP) snake.direction = DOWN;
 
-    // Movement happens every 'speedValue' frames
-    if (frames % speedValue === 0) {
+    // Move the snake every N (speed) frames
+    if (frames % speed === 0) {
         var nx = snake.last.x;
         var ny = snake.last.y;
 
         switch (snake.direction) {
             case LEFT: nx--; break;
-            case UP: ny--; break;
             case RIGHT: nx++; break;
+            case UP: ny--; break;
             case DOWN: ny++; break;
         }
 
         // Game Over Check
-        if (0 > nx || nx > grid.width-1 || 0 > ny || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
+        if (nx <= 0 || nx > grid.width-1 || ny <= 0 || ny > grid.height-1 || grid.get(nx, ny) === SNAKE) {
             isGameOver = true; 
             saveHighScore(score);
 
@@ -203,11 +201,11 @@ if (speedSelect) {
     const savedSpeed = localStorage.getItem('snakeSpeed');
     if (savedSpeed) {
         speedSelect.value = savedSpeed;
-        speedValue = parseInt(savedSpeed);
+        speed = parseInt(savedSpeed);
     }
     speedSelect.addEventListener('change', (event) => {
-        speedValue = parseInt(event.target.value);
-        localStorage.setItem('snakeSpeed', speedValue);
+        speed = parseInt(event.target.value);
+        localStorage.setItem('snakeSpeed', speed);
     });
 }
 
