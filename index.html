@@ -17,24 +17,12 @@
           </div>
           <p class="text-muted fst-italic mt-2 mb-0">Now with more snake</p>
       </div>
-      
-      <nav class="navbar navbar-expand justify-content-center">
-          <ul class="navbar-nav gap-4 fw-semibold">
-              <li class="nav-item">
-                  <a href="#" class="nav-link header-link" data-bs-toggle="modal" data-bs-target="#rulesModal">Quick Rules</a>
-              </li>
-              <li class="nav-item">
-                  <a href="pages/how-play.html" class="nav-link header-link">Full Guide</a>
-              </li>
-              <li class="nav-item">
-                  <a href="https://ajuna345.github.io/snake-game/" class="nav-link header-link">Play/Rest</a>
-              </li>
-              <li class="nav-item">
-                  <a href="pages/leaderboard.html" class="nav-link header-link">Dev Profile</a>
-              </li>
-              <li class="nav-item">
-                  <a href="pages/leaderboard.html" class="nav-link header-link">Leaderboard</a>
-              </li>
+      <nav>
+          <ul class="d-flex justify-content-center gap-4 list-unstyled mb-0 fw-semibold">
+              <li><a href="pages/how-play.html" class="text-decoration-none header-link">How to Play</a></li>
+              <li><a href="https://ajuna345.github.io/snake-game/" class="text-decoration-none header-link">Play/Rest</a></li>
+               <li><a href="https://ajuna345.github.io/AJuna345/" class="text-decoration-none header-link">Dev Profile</a></li>
+              <li><a href="pages/leaderboard.html" class="text-decoration-none header-link">Leaderboard</a></li>
           </ul>
       </nav>
   </header>
@@ -62,16 +50,19 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">How to Play</h5>
+                    <p class="small mb-3">
+                        Eat the food to grow longer and score points.<br>
+                        Don't hit the walls or your own tail!
+                    </p>
+                    <h6 class="text-center fw-bold mb-2">Controls</h6>
                     <ul class="list-unstyled">
-                        <li><strong>UP:</strong> <kbd>↑</kbd></li>
-                        <li><strong>DOWN:</strong> <kbd>↓</kbd></li>
-                        <li><strong>LEFT:</strong> <kbd>←</kbd></li>
-                        <li><strong>RIGHT:</strong> <kbd>→</kbd></li>
+                        <li><strong style="display: inline-block; width: 70px;">UP:</strong> <kbd>↑</kbd></li>
+                        <li><strong style="display: inline-block; width: 70px;">DOWN:</strong> <kbd>↓</kbd></li>
+                        <li><strong style="display: inline-block; width: 70px;">LEFT:</strong> <kbd>←</kbd></li>
+                        <li><strong style="display: inline-block; width: 70px;">RIGHT:</strong> <kbd>→</kbd></li>
                     </ul>
                     <hr>
-                    <p class="small text-muted">Eat the red squares to grow. Don't hit the walls or yourself!</p>
                 </div>
-            </div>
 
             <div class="card shadow-sm">
                 <div class="card-body">
@@ -117,26 +108,6 @@
           </a>
       </div>
   </footer>
-
-  <div class="modal fade" id="rulesModal" tabindex="-1" aria-labelledby="rulesModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content text-dark"> <div class="modal-header">
-                  <h5 class="modal-title fw-bold" id="rulesModalLabel">Snake Game Rules</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body text-start">
-                  <p><strong>Goal:</strong> Eat the food to grow longer and score points.</p>
-                  <p><strong>Controls:</strong> Use your keyboard's arrow keys to steer.</p>
-                  <p><strong>Danger:</strong> If you crash into a wall or bite your own tail, it's Game Over!</p>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="scripts/game.js"></script>
     
 </body>
