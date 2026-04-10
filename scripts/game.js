@@ -4,7 +4,7 @@ var EMPTY = 0, SNAKE = 1, FRUIT = 2;
 var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
 var KEY_LEFT = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
 var canvas, ctx, keystate, frames, score, isGameOver; 
-var speed = 7; // Default speed
+var speedValue = 7; // Default speed
 
 // Cached Theme Colors
 var currentSnakeColor = "#28a745";
@@ -120,7 +120,7 @@ function update() {
     if (keystate[KEY_DOWN] && snake.direction !== UP) snake.direction = DOWN;
 
     // Movement everything every N (speed) frames. Speed = 1 is very fast
-    if (frames % speed === 0) {
+    if (frames % speedValue === 0) {
         var nx = snake.last.x;
         var ny = snake.last.y;
 
@@ -203,11 +203,11 @@ if (speedSelect) {
     const savedSpeed = localStorage.getItem('snakeSpeed');
     if (savedSpeed) {
         speedSelect.value = savedSpeed;
-        speed = parseInt(savedSpeed);
+        speedValue= parseInt(savedSpeed);
     }
     speedSelect.addEventListener('change', (event) => {
-        speed = parseInt(event.target.value);
-        localStorage.setItem('snakeSpeed', speed);
+        speedValue = parseInt(event.target.value);
+        localStorage.setItem('snakeSpeed', speedValue);
     });
 }
 
