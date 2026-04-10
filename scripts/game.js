@@ -106,6 +106,15 @@ function playGame() {
 }
 
 function update() {
+    if (speed >= 10) // Easy Mode
+      foodScore=1;
+    else if (speed >= 7) // Normal Mode
+      foodScore=2;
+    else if (speed >= 4) // Hard Mode
+      foodScore=3;
+    else if (speed >= 2) // Insane Mode
+      foodScore=5;
+
     frames++;
 
     if (keystate[KEY_LEFT] && snake.direction !== RIGHT) snake.direction = LEFT;
@@ -205,15 +214,6 @@ if (speedSelect) {
         speed = parseInt(event.target.value);
         localStorage.setItem('snakeSpeed', speed);
     });
-
-    if (speed >= 10) // Easy Mode
-      foodScore=1;
-    else if (speed >= 7) // Normal Mode
-      foodScore=2;
-    else if (speed >= 4) // Hard Mode
-      foodScore=3;
-    else if (speed >= 2) // Insane Mode
-      foodScore=5;
 }
 
 // Load saved name
