@@ -6,15 +6,15 @@ var canvas, ctx, keystate, frames, score, gameOver;
 var speed = 7; // Default speed (Normal)
 
 // Cached Theme Colors
-var currentSnakeColor = "#28a745";
-var currentCanvasBg = "#ffffff";
-var currentTextColor = "#333333";
+var snakeColor = "#28a745";
+var canvasBg = "#ffffff";
+var textColor = "#333333";
 
 function updateThemeColors() {
     const computedStyle = getComputedStyle(document.body);
-    currentSnakeColor = computedStyle.getPropertyValue('--snake-color').trim() || "#28a745";
-    currentCanvasBg = computedStyle.getPropertyValue('--canvas-bg').trim() || "#ffffff";
-    currentTextColor = computedStyle.getPropertyValue('--text-color').trim() || "#333333";
+    snakeColor = computedStyle.getPropertyValue('--snake-color').trim() || "#28a745";
+    canvasBg = computedStyle.getPropertyValue('--canvas-bg').trim() || "#ffffff";
+    textColor = computedStyle.getPropertyValue('--text-color').trim() || "#333333";
 }
 
 // 2. The Grid System
@@ -173,14 +173,14 @@ function draw() {
     for (var x = 0; x < grid.width; x++) {
         for (var y = 0; y < grid.height; y++) {
             switch (grid.get(x, y)) {
-                case EMPTY: ctx.fillStyle = currentCanvasBg; break;
-                case SNAKE: ctx.fillStyle = currentSnakeColor; break;
+                case EMPTY: ctx.fillStyle = canvasBg; break;
+                case SNAKE: ctx.fillStyle = snakeColor; break;
                 case FRUIT: ctx.fillStyle = "#ff4444"; break; 
             }
             ctx.fillRect(x * tw, y * th, tw, th);
         }
     }
-    ctx.fillStyle = currentTextColor;
+    ctx.fillStyle = textColor;
     ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
 }
 
@@ -220,11 +220,11 @@ if (savedName) {
 
 if (saveBtn) {
     saveBtn.addEventListener('click', () => {
-        const currentName = nameInput.value.trim();
-        if (currentName !== "") {
-            localStorage.setItem('snakePlayerName', currentName);
-            greeting.textContent = `Name saved as ${currentName}!`;
-            if (currentName.toLowerCase() === "garfield") {
+        const playerName = nameInput.value.trim();
+        if (playerName !== "") {
+            localStorage.setItem('snakePlayerName', playerName);
+            greeting.textContent = `Name saved as ${playerName}!`;
+            if (playerName.toLowerCase() === "garfield") {
                 unlockGarfieldTheme();
             }
         }
