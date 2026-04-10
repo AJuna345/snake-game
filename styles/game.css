@@ -88,13 +88,30 @@ canvas {
 }
 
 #gameOverScreen {
-    margin: 20px auto;
-    padding: 20px;
+    /* Center the Game Over screen */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 80%;
+    max-width: 350px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    padding: 30px 20px;
     background: rgba(0, 0, 0, 0.85);
     color: white;
     border: 2px solid #ff4444;
     border-radius: 8px;
-    display: inline-block;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+#gameOverScreen.hidden {
+    display: block !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Prevent users from clicking the invisible Play button */
 }
 
 body.theme-garfield {
