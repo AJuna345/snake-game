@@ -1,11 +1,10 @@
 // 1. Setup Constants and Variables
-var COLS = 26, ROWS = 26,
-    EMPTY = 0, SNAKE = 1, FRUIT = 2,
-    LEFT  = 0, UP    = 1, RIGHT = 2, DOWN  = 3,
-    KEY_LEFT  = 37, KEY_UP    = 38, KEY_RIGHT = 39, KEY_DOWN  = 40,
-    canvas, ctx, keystate, frames, score, isGameOver; 
-
-var speedValue = 7; // Default speed
+var COLS = 26, ROWS = 26;
+var EMPTY = 0, SNAKE = 1, FRUIT = 2;
+var LEFT  = 0, UP    = 1, RIGHT = 2, DOWN  = 3;
+var KEY_LEFT  = 37, KEY_UP    = 38, KEY_RIGHT = 39, KEY_DOWN  = 40;
+var canvas, ctx, keystate, frames, score, isGameOver; 
+var speedValue = 7; // Default speed (Normal)
 
 // Cached Theme Colors
 var currentSnakeColor = "#28a745";
