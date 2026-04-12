@@ -1,4 +1,4 @@
-/* 1. Import the font from Google right at the top! */
+/* Import the games fonts from Google. I like the classic 16 bit DotGothic16 better than Press Start 2P */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 
@@ -114,6 +114,7 @@ canvas {
     pointer-events: none; /* Prevent users from clicking the invisible Play button */
 }
 
+/* Garfield Easter Egg theme */
 body.theme-garfield {
     --bg-color: #ffa502;      
     --text-color: #543200;    
@@ -121,7 +122,8 @@ body.theme-garfield {
     --canvas-bg: #fff5e6;     
     --border-color: #543200; 
 }
-/* Ensure Sidebar Cards match the theme colors */
+
+/* Make Sidebar Cards match the theme colors */
 .card {
     background-color: var(--canvas-bg);
     border: 2px solid var(--border-color);
@@ -129,7 +131,30 @@ body.theme-garfield {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Style the keyboard key icons */
+/* Keep navbar links synced with the active theme */
+.navbar {
+    background-color: var(--bg-color);
+}
+
+.navbar .nav-link.header-link,
+.navbar .navbar-brand {
+    color: var(--text-color) !important;
+}
+
+.navbar .nav-link.header-link:hover,
+.navbar .nav-link.header-link:focus {
+    color: var(--snake-color) !important;
+}
+
+.navbar-toggler {
+    border-color: var(--border-color);
+}
+
+.navbar-toggler-icon {
+    filter: brightness(0) saturate(100%);
+}
+
+/* Make the keyboard key icons match the theme */
 kbd {
     font-family: 'DotGothic16', 'Courier New', monospace;
     background-color: var(--border-color);
@@ -137,6 +162,7 @@ kbd {
     padding: 2px 5px;
     font-size: 0.9rem;
 }
+
 footer .btn-outline-secondary {
     font-family: 'DotGothic16', 'Courier New', monospace;
     font-size: 12px;
@@ -159,4 +185,3 @@ footer .btn-outline-secondary:hover {
     scroll-behavior: auto !important;
   }
 }
-
