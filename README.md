@@ -79,7 +79,7 @@ I want to track player high scores on a leaderboard and remember them between ga
 - Garfield Easter egg theme
 
 ## Code block + explanation (“game.js” Garfield Easter Egg)
-This code adds the Garfield Easter Egg theme when the player enters the name Garfield. It works with the DOM by finding the theme dropdown menu in the page, checking whether a Garfield option is already inside that menu, and creating a new <option> element if it is missing. Then the JavaScript code adds that new option into the dropdown, changes the selected value, updates the <body> class so the page uses the Garfield theme colors. It saves that choice in local storage, and redraws everything so the game theme updates immediately. This is a good example of JavaScript changing existing page elements, adding new DOM content, and saving a user setting.
+This code adds the Garfield Easter Egg theme when the player enters the name Garfield. It works with the DOM by finding the theme dropdown menu in the page, checking whether a Garfield option is already inside that menu, and creating a new `<option>` element if it is missing. Then the JavaScript code adds that new option into the dropdown, changes the selected value, updates the `<body>` class so the page uses the Garfield theme colors, saves that choice in local storage, and redraws everything so the game theme updates immediately. This is a good example of JavaScript changing existing page elements, adding new DOM content, and saving a user setting.
 
 ```javascript
 function unlockGarfieldTheme() {
