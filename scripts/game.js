@@ -1,3 +1,14 @@
+import {
+    getPlayerName,
+    savePlayerName,
+    getTheme,
+    saveTheme,
+    getSpeed,
+    saveSpeed,
+    saveHighScore
+} from './storage.js';
+
+// 1. Setup Constants and Variables
 var WIDTH = 26, HEIGHT = 26; // Width and height of the game board
 var EMPTY = 0, SNAKE = 1, FOOD = 2;
 var LEFT  = 0, RIGHT = 1, UP = 2, DOWN  = 3;
@@ -5,6 +16,8 @@ var KEY_LEFT = 37, KEY_RIGHT = 39, KEY_UP = 38, KEY_DOWN  = 40;
 var canvas, ctx, keystate, frames, score, gameOver; 
 var speed = 7; // Default speed (Normal)
 var foodScore = 1; // Increase scores with higher difficulty levels/speeds
+var gameStarted = false;
+var animationStarted = false;
 
 // Cached Theme Colors
 var snakeColor = "#28a745";
@@ -56,33 +69,44 @@ function setFood() {
 }
 
 function main() {
-    canvas = document.createElement("canvas");
-    canvas.width = WIDTH * 20;
-    canvas.height = HEIGHT * 20;
-    ctx = canvas.getContext("2d");
-    
-    var gameSection = document.getElementById("game-section");
-    var gameOverDiv = document.getElementById("gameOverScreen");
-    gameSection.insertBefore(canvas, gameOverDiv);
-    
-    ctx.font = "bold 14px Arial";
+    if (!canvas) {
+        canvas = document.createElement("canvas");
+        canvas.width = WIDTH * 20;
+        canvas.height = HEIGHT * 20;
+        ctx = canvas.getContext("2d");
+        
+        var gameSection = document.getElementById("game-section");
+        var gameOverDiv = document.getElementById("gameOverScreen");
+        gameSection.insertBefore(canvas, gameOverDiv);
+        
+        ctx.font = "bold 14px Arial";
+    }
+
     frames = 0;
     keystate = {};
 
-    document.addEventListener("keydown", function(evt) {
-        if (document.activeElement.tagName === "INPUT") return;
-        if([KEY_LEFT, KEY_UP, KEY_RIGHT, KEY_DOWN].indexOf(evt.keyCode) > -1) {
-            evt.preventDefault();
-        }
-        keystate[evt.keyCode] = true;
-    });
-    
-    document.addEventListener("keyup", function(evt) {
-        delete keystate[evt.keyCode];
-    });
+    if (!gameStarted) {
+        document.addEventListener("keydown", function(evt) {
+            if (document.activeElement.tagName === "INPUT") return;
+            if([KEY_LEFT, KEY_UP, KEY_RIGHT, KEY_DOWN].indexOf(evt.keyCode) > -1) {
+                evt.preventDefault();
+            }
+            keystate[evt.keyCode] = true;
+        });
+        
+        document.addEventListener("keyup", function(evt) {
+            delete keystate[evt.keyCode];
+        });
+
+        gameStarted = true;
+    }
 
     initGame();
-    setTimeout(playGame, 500); // Give the player one second before a new game starts
+
+    if (!animationStarted) {
+        animationStarted = true;
+        setTimeout(playGame, 500); // Give the player one second before a new game starts
+    }
 }
 
 function initGame() {
@@ -94,6 +118,17 @@ function initGame() {
     snake.init(UP, sp.x, sp.y);
     grid.set(SNAKE, sp.x, sp.y);
     setFood();
+
+    const announcer = document.getElementById("game-announcer");
+    if (announcer) {
+        announcer.textContent = "Game started. Current score: 0";
+    }
+
+    if (document.getElementById("gameOverScreen")) {
+        document.getElementById("gameOverScreen").classList.add("hidden");
+    }
+
+    draw();
 }
 
 function playGame() {
@@ -106,13 +141,13 @@ function playGame() {
 
 function update() {
     if (speed >= 10) // Easy Mode
-      foodScore=1;
+      foodScore = 1;
     else if (speed >= 7) // Normal Mode
-      foodScore=2;
+      foodScore = 2;
     else if (speed >= 4) // Hard Mode
-      foodScore=3;
+      foodScore = 3;
     else if (speed >= 2) // Insane Mode
-      foodScore=5;
+      foodScore = 5;
 
     frames++;
 
@@ -136,7 +171,9 @@ function update() {
         // Game Over Check
         if (x < 0 || x >= grid.width || y < 0 || y >= grid.height || grid.get(x, y) === SNAKE) {
             gameOver = true; 
-            saveHighScore(score);
+
+            const currentName = document.getElementById('playerName').value.trim() || "Anonymous";
+            saveHighScore(currentName, score);
 
             document.getElementById("finalScore").innerText = score; 
             document.getElementById("gameOverScreen").classList.remove("hidden"); 
@@ -149,8 +186,13 @@ function update() {
         }
 
         if (grid.get(x, y) === FOOD) {
-            score+=foodScore;
+            score += foodScore;
             setFood();
+
+            const announcer = document.getElementById("game-announcer");
+            if (announcer) {
+                announcer.textContent = "Current score: " + score;
+            }
         } else {
             var tail = snake.remove();
             grid.set(EMPTY, tail.x, tail.y);
@@ -159,15 +201,6 @@ function update() {
         grid.set(SNAKE, x, y);
         snake.insert(x, y);
     }
-}
-
-function saveHighScore(latestScore) {
-    const name = document.getElementById('playerName').value.trim() || "Anonymous";
-    let highScores = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
-    highScores.push({ name: name, score: latestScore });
-    highScores.sort((a, b) => b.score - a.score);
-    highScores = highScores.slice(0, 10);
-    localStorage.setItem('snakeLeaderboard', JSON.stringify(highScores));
 }
 
 // Draw the Game Board (grid)
@@ -192,11 +225,6 @@ function draw() {
     ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
 }
 
-document.getElementById("restartBtn").addEventListener("click", function() {
-    document.getElementById("gameOverScreen").classList.add("hidden"); 
-    initGame(); 
-});
-
 const nameInput = document.getElementById('playerName');
 const saveBtn = document.getElementById('saveNameBtn');
 const greeting = document.getElementById('greetingMessage');
@@ -204,19 +232,18 @@ const speedSelect = document.getElementById('speedSelect');
 
 // Load saved speed settings
 if (speedSelect) {
-    const savedSpeed = localStorage.getItem('snakeSpeed');
-    if (savedSpeed) {
-        speedSelect.value = savedSpeed;
-        speed = parseInt(savedSpeed);
-    }
+    const savedSpeed = getSpeed();
+    speedSelect.value = savedSpeed;
+    speed = parseInt(savedSpeed);
+
     speedSelect.addEventListener('change', (event) => {
         speed = parseInt(event.target.value);
-        localStorage.setItem('snakeSpeed', speed);
+        saveSpeed(speed);
     });
 }
 
 // Load saved name
-const savedName = localStorage.getItem('snakePlayerName');
+const savedName = getPlayerName();
 if (savedName) {
     nameInput.value = savedName;
     greeting.textContent = `Welcome back, ${savedName}!`;
@@ -229,7 +256,7 @@ if (saveBtn) {
     saveBtn.addEventListener('click', () => {
         const playerName = nameInput.value.trim();
         if (playerName !== "") {
-            localStorage.setItem('snakePlayerName', playerName);
+            savePlayerName(playerName);
             greeting.textContent = `Name saved as ${playerName}!`;
             if (playerName.toLowerCase() === "garfield") {
                 unlockGarfieldTheme();
@@ -240,7 +267,7 @@ if (saveBtn) {
 
 const themeSelect = document.getElementById('themeSelect');
 if (themeSelect) {
-    const savedTheme = localStorage.getItem('snakeTheme') || 'classic';
+    const savedTheme = getTheme();
     themeSelect.value = savedTheme;
     document.body.className = `theme-${savedTheme}`;
     setTimeout(updateThemeColors, 50);
@@ -248,10 +275,10 @@ if (themeSelect) {
     themeSelect.addEventListener('change', (event) => {
         const selectedTheme = event.target.value;
         document.body.className = `theme-${selectedTheme}`;
-        localStorage.setItem('snakeTheme', selectedTheme);
+        saveTheme(selectedTheme);
         setTimeout(() => {
             updateThemeColors(); 
-            if (canvas && ctx && !gameOver) draw();
+            if (canvas && ctx) draw();
         }, 50);
     });
 }
@@ -267,20 +294,31 @@ function unlockGarfieldTheme() {
     }
     themeSelect.value = 'garfield';
     document.body.className = 'theme-garfield';
-    localStorage.setItem('snakeTheme', 'garfield');
+    saveTheme('garfield');
     setTimeout(() => {
         updateThemeColors();
-        if (canvas && ctx && !gameOver) draw();
+        if (canvas && ctx) draw();
     }, 50);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
     const startBtn = document.getElementById("startBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    console.log("Hint: If you hate Mondays, try Garfield as your name.");
+
     if (startBtn) {
         startBtn.addEventListener("click", function() {
             document.getElementById("startScreen").classList.add("hidden");
             document.getElementById("game-section").classList.remove("hidden");
             main(); 
+        });
+    }
+
+    if (restartBtn) {
+        restartBtn.addEventListener("click", function() {
+            document.getElementById("gameOverScreen").classList.add("hidden"); 
+            initGame(); 
         });
     }
 });
