@@ -66,7 +66,7 @@
         <div class="col-md-4">
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    <h5 class="card-title fw-bold">How to Play</h5>
+                    <h2 class="card-title fw-bold">How to Play</h2>
                     <p class="small mb-3">
                         Eat the food to grow longer and score points.<br>
                         Don't hit the walls or your own tail!
@@ -108,13 +108,8 @@
 
                         <div class="mb-3">
                             <label for="themeSelect"><strong>Select Theme:</strong></label>
-                            <select
-                                id="themeSelect"
-                                name="themeSelect"
-                                class="form-select form-select-sm"
-                                required
-                                aria-describedby="themeError"
-                            >
+                            <select id="themeSelect" name="themeSelect"class="form-select form-select-sm" required aria-describedby="themeError">
+                                <option value="">Choose a theme</option>
                                 <option value="classic">Classic</option>
                                 <option value="dark">Dark Mode</option>
                                 <option value="neon">Neon</option>
@@ -124,15 +119,10 @@
 
                         <div>
                             <label for="speedSelect"><strong>Difficulty:</strong></label>
-                            <select
-                                id="speedSelect"
-                                name="speedSelect"
-                                class="form-select form-select-sm"
-                                required
-                                aria-describedby="speedError"
-                            >
+                            <select id="speedSelect" name="speedSelect" class="form-select form-select-sm" required aria-describedby="speedError">
+                                <option value="">Choose a difficulty</option>
                                 <option value="10">Easy (Slow)</option>
-                                <option value="7" selected>Medium (Normal)</option>
+                                <option value="7">Medium (Normal)</option>
                                 <option value="4">Hard (Fast)</option>
                                 <option value="2">Insane (Ultra Fast)</option>
                             </select>
@@ -146,7 +136,7 @@
         </div>
     </div>
   </main>
-  <div class="modal fade" id="leaderboardModal" tabindex="-1" aria-labelledby="leaderboardModalLabel" aria-hidden="true">
+  <div class="modal fade" id="leaderboardModal" tabindex="-1" role="dialog" aria-labelledby="leaderboardModalLabel" aria-hidden="true">
       <div class="modal-dialog">
           <div class="modal-content text-dark">
               <div class="modal-header">
