@@ -231,7 +231,6 @@ const nameInput = document.getElementById('playerName');
 const saveBtn = document.getElementById('saveNameBtn');
 const greeting = document.getElementById('greetingMessage');
 const speedSelect = document.getElementById('speedSelect');
-const themeSelect = document.getElementById('themeSelect');
 
 const playerNameError = document.getElementById('playerNameError');
 const themeError = document.getElementById('themeError');
