@@ -78,58 +78,24 @@ I want to track player high scores on a leaderboard and remember them between ga
 - Accessible status announcements with `aria-live`
 - Garfield Easter egg theme
 
-## Code block + explanation (“game.js” settings form submit handler)
-This code listens for the **Settings Form** to be submitted and then connects the form directly to the **DOM** by reading values from the page with `getElementById()`. It checks the player name field for errors, shows inline messages in the page if something is wrong, and stops the form from doing a normal page reload with `event.preventDefault()`. If the form is valid, it saves the player name, theme, and speed settings in local storage and updates the page immediately by changing the theme class on the `<body>` element. This is a good example of JavaScript reading from the DOM, validating user input, updating text in the DOM, and applying changes live to the interface.
+## Code block + explanation (“game.js” Garfield Easter Egg)
+This code adds the Garfield Easter Egg theme when the player enters the name Garfield. It works with the DOM by finding the theme dropdown menu in the page, checking whether a Garfield option is already inside that menu, and creating a new <option> element if it is missing. Then the JavaScript code adds that new option into the dropdown, changes the selected value, updates the <body> class so the page uses the Garfield theme colors. It saves that choice in local storage, and redraws everything so the game theme updates immediately. This is a good example of JavaScript changing existing page elements, adding new DOM content, and saving a user setting.
 
 ```javascript
-if (settingsForm) {
-    settingsForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        // Clear old inline errors
-        if (playerNameError) playerNameError.textContent = '';
-        if (themeError) themeError.textContent = '';
-        if (speedError) speedError.textContent = '';
-
-        if (nameInput) nameInput.setCustomValidity('');
-        if (themeSelect) themeSelect.setCustomValidity('');
-        if (speedSelect) speedSelect.setCustomValidity('');
-
-        // Player name validation
-        if (nameInput) {
-            if (nameInput.validity.valueMissing) {
-                nameInput.setCustomValidity('Please enter a player name.');
-                if (playerNameError) playerNameError.textContent = 'Please enter a player name.';
-            } else if (nameInput.validity.tooShort) {
-                nameInput.setCustomValidity('Name must be at least 2 characters.');
-                if (playerNameError) playerNameError.textContent = 'Name must be at least 2 characters.';
-            } else if (nameInput.validity.tooLong) {
-                nameInput.setCustomValidity('Name must be 12 characters or fewer.');
-                if (playerNameError) playerNameError.textContent = 'Name must be 12 characters or fewer.';
-            } else if (nameInput.validity.patternMismatch) {
-                nameInput.setCustomValidity('Use only letters, numbers, and spaces.');
-                if (playerNameError) playerNameError.textContent = 'Use only letters, numbers, and spaces.';
-            }
-        }
-
-        if (!settingsForm.checkValidity()) {
-            settingsForm.reportValidity();
-            return;
-        }
-
-        const playerName = nameInput.value.trim();
-        const selectedTheme = themeSelect.value;
-        const selectedSpeed = parseInt(speedSelect.value);
-
-        savePlayerName(playerName);
-        saveTheme(selectedTheme);
-        saveSpeed(selectedSpeed);
-
-        speed = selectedSpeed;
-        document.body.className = `theme-${selectedTheme}`;
-
-        if (greeting) {
-            greeting.textContent = `Settings saved for ${playerName}!`;
-        }
-    });
+function unlockGarfieldTheme() {
+    const themeSelect = document.getElementById('themeSelect');
+    let garfieldOption = themeSelect.querySelector('option[value="garfield"]');
+    if (!garfieldOption) {
+        garfieldOption = document.createElement('option');
+        garfieldOption.value = 'garfield';
+        garfieldOption.textContent = 'Garfield (Monday Mode)';
+        themeSelect.appendChild(garfieldOption);
+    }
+    themeSelect.value = 'garfield';
+    document.body.className = 'theme-garfield';
+    saveTheme('garfield');
+    setTimeout(() => {
+        updateThemeColors();
+        if (canvas && ctx) draw();
+    }, 50);
 }
