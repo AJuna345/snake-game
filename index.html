@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Easter Egg: If you hate monday's type Garfield as your name -->
+<!-- Easter Egg: If you hate Mondays type Garfield as your name -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,29 +67,63 @@
             
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <div class="mb-3">
-                        <label for="playerName"><strong>Player Name:</strong></label>
-                        <input type="text" id="playerName" class="form-control form-control-sm" placeholder="Enter your name">
-                        <button id="saveNameBtn" class="btn btn-sm btn-primary mt-2 w-100" style="background-color: #8e4fd6; border: none;">Save Name</button>
-                        <div id="greetingMessage" class="mt-2 small fw-bold text-center"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="themeSelect"><strong>Select Theme:</strong></label>
-                        <select id="themeSelect" class="form-select form-select-sm">
-                            <option value="classic">Classic</option>
-                            <option value="dark">Dark Mode</option>
-                            <option value="neon">Neon</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="speedSelect"><strong>Difficulty:</strong></label>
-                        <select id="speedSelect" class="form-select form-select-sm">
-                            <option value="10">Easy (Slow)</option>
-                            <option value="7" selected>Medium (Normal)</option>
-                            <option value="4">Hard (Fast)</option>
-                            <option value="2">Insane (Ultra Fast)</option>
-                        </select>
-                    </div>
+                    <form id="settingsForm" novalidate>
+                        <div class="mb-3">
+                            <label for="playerName"><strong>Player Name:</strong></label>
+                            <input
+                                type="text"
+                                id="playerName"
+                                name="playerName"
+                                class="form-control form-control-sm"
+                                placeholder="Enter your name"
+                                required
+                                minlength="2"
+                                maxlength="12"
+                                pattern="[A-Za-z0-9 ]+"
+                                aria-describedby="playerNameHelp playerNameError"
+                            >
+                            <div id="playerNameHelp" class="form-text">
+                                Use 2-12 letters, numbers, or spaces.
+                            </div>
+                            <div id="playerNameError" class="text-danger small mt-1" aria-live="polite"></div>
+                            <div id="greetingMessage" class="mt-2 small fw-bold text-center"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="themeSelect"><strong>Select Theme:</strong></label>
+                            <select
+                                id="themeSelect"
+                                name="themeSelect"
+                                class="form-select form-select-sm"
+                                required
+                                aria-describedby="themeError"
+                            >
+                                <option value="classic">Classic</option>
+                                <option value="dark">Dark Mode</option>
+                                <option value="neon">Neon</option>
+                            </select>
+                            <div id="themeError" class="text-danger small mt-1" aria-live="polite"></div>
+                        </div>
+
+                        <div>
+                            <label for="speedSelect"><strong>Difficulty:</strong></label>
+                            <select
+                                id="speedSelect"
+                                name="speedSelect"
+                                class="form-select form-select-sm"
+                                required
+                                aria-describedby="speedError"
+                            >
+                                <option value="10">Easy (Slow)</option>
+                                <option value="7" selected>Medium (Normal)</option>
+                                <option value="4">Hard (Fast)</option>
+                                <option value="2">Insane (Ultra Fast)</option>
+                            </select>
+                            <div id="speedError" class="text-danger small mt-1" aria-live="polite"></div>
+                        </div>
+
+                        <button id="saveNameBtn" type="submit" class="btn btn-sm btn-primary mt-3 w-100" style="background-color: #8e4fd6; border: none;">Save Settings</button>
+                    </form>
                 </div>
             </div>
         </div>
