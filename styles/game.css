@@ -175,6 +175,20 @@ footer .btn-outline-secondary:hover {
     color: var(--canvas-bg);
 }
 
+/* W3C Selectors spec: https://www.w3.org/TR/selectors-4/#the-nth-child-pseudo */
+/* Selects odd-numbered list items */
+/* Changes the opacity of every other control item to make it look more interesting */
+.card ul li:nth-child(odd) {
+    opacity: 0.90;
+}
+
+/* W3C Selectors spec: https://www.w3.org/TR/selectors-4/#attribute-selectors */
+/* Finds links with target="_blank" */
+/* Highlights links that open in a new tab */
+a[target="_blank"] {
+    text-decoration: underline;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
