@@ -24,6 +24,7 @@ var snakeColor = "#28a745";
 var canvasBg = "#ffffff";
 var textColor = "#333333";
 
+// Get the CSS theme colors to make the game match the selected theme
 function updateThemeColors() {
     const computedStyle = getComputedStyle(document.body);
     snakeColor = computedStyle.getPropertyValue('--snake-color').trim() || "#28a745";
@@ -31,6 +32,7 @@ function updateThemeColors() {
     textColor = computedStyle.getPropertyValue('--text-color').trim() || "#333333";
 }
 
+// Create the game board grid
 var grid = {
     width: null, height: null, _grid: null,
     init: function(d, c, r) {
@@ -56,6 +58,7 @@ var snake = {
     remove: function() { return this._queue.pop(); }
 };
 
+// Add food to a random empty location on the gameboard
 function setFood() {
     var empty = [];
     for (var x = 0; x < grid.width; x++) {
@@ -109,6 +112,7 @@ function main() {
     }
 }
 
+// Reset the board for a new game and hide the Game Over screen
 function initGame() {
     gameOver = false; 
     score = 0;
@@ -140,6 +144,7 @@ function playGame() {
 }
 
 function update() {
+    // Increase the food score using the snake difficulty/speed
     if (speed >= 10) // Easy Mode
       foodScore = 1;
     else if (speed >= 7) // Normal Mode
@@ -185,6 +190,7 @@ function update() {
             return; 
         }
 
+        // Increase the player score when the snake finds food
         if (grid.get(x, y) === FOOD) {
             score += foodScore;
             setFood();
@@ -203,7 +209,7 @@ function update() {
     }
 }
 
-// Draw the Game Board (grid)
+// Draw the Gameboard (grid)
 function draw() {
     var tw = canvas.width / grid.width;
     var th = canvas.height / grid.height;
@@ -246,7 +252,7 @@ if (speedSelect) {
     });
 }
 
-// Load saved name
+// Load saved player name
 const savedName = getPlayerName();
 if (savedName) {
     nameInput.value = savedName;
@@ -275,11 +281,11 @@ if (settingsForm) {
                 nameInput.setCustomValidity('Please enter a player name.');
                 if (playerNameError) playerNameError.textContent = 'Please enter a player name.';
             } else if (nameInput.validity.tooShort) {
-                nameInput.setCustomValidity('Name must be at least 2 characters.');
+                nameInput.setCustomValidity('Player name must be at least 2 characters.');
                 if (playerNameError) playerNameError.textContent = 'Name must be at least 2 characters.';
             } else if (nameInput.validity.tooLong) {
-                nameInput.setCustomValidity('Name must be 12 characters or fewer.');
-                if (playerNameError) playerNameError.textContent = 'Name must be 12 characters or fewer.';
+                nameInput.setCustomValidity('Player name must be less than 12 characters.');
+                if (playerNameError) playerNameError.textContent = 'Player name must be less than 12 characters.';
             } else if (nameInput.validity.patternMismatch) {
                 nameInput.setCustomValidity('Use only letters, numbers, and spaces.');
                 if (playerNameError) playerNameError.textContent = 'Use only letters, numbers, and spaces.';
@@ -288,13 +294,13 @@ if (settingsForm) {
 
         // Theme validation
         if (themeSelect && !themeSelect.value) {
-            themeSelect.setCustomValidity('Please choose a theme.');
+            themeSelect.setCustomValidity('Please select a theme.');
             if (themeError) themeError.textContent = 'Please choose a theme.';
         }
 
         // Difficulty validation
         if (speedSelect && !speedSelect.value) {
-            speedSelect.setCustomValidity('Please choose a difficulty.');
+            speedSelect.setCustomValidity('Please select a difficulty.');
             if (speedError) speedError.textContent = 'Please choose a difficulty.';
         }
 
