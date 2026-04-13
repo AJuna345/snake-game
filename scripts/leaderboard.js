@@ -1,9 +1,9 @@
+// Wait until the page is loaded before updating the Leaderboard
 document.addEventListener('DOMContentLoaded', () => {
     const leaderboardBody = document.getElementById('leaderboard-body');
     const leaderboardModal = document.getElementById('leaderboardModal');
     const clearLeaderboardBtn = document.getElementById('clearLeaderboardBtn');
 
-    // Function to fetch and draw the scores
     function loadLeaderboard() {
         if (!leaderboardBody) return;
 
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Add the scores into the table
+        // Add the Top 10 scores into the table
         scores.slice(0, 10).forEach((entry, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load the scores when the page first loads
     loadLeaderboard();
 
-    // Load the leaderboard scores when the modal is shown
+    // Reload the leaderboard when the modal is opened
     if (leaderboardModal) {
         leaderboardModal.addEventListener('show.bs.modal', loadLeaderboard);
     }
