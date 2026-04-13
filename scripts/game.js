@@ -241,6 +241,11 @@ const playerNameError = document.getElementById('playerNameError');
 const themeError = document.getElementById('themeError');
 const speedError = document.getElementById('speedError');
 
+const upBtn = document.getElementById('upBtn');
+const downBtn = document.getElementById('downBtn');
+const leftBtn = document.getElementById('leftBtn');
+const rightBtn = document.getElementById('rightBtn');
+
 // Clear player name errors when they type in a new one
 if (nameInput) {
     nameInput.addEventListener('input', () => {
@@ -401,6 +406,28 @@ document.addEventListener("DOMContentLoaded", function() {
         restartBtn.addEventListener("click", function() {
             document.getElementById("gameOverScreen").classList.add("hidden"); 
             initGame(); 
+        });
+    }
+
+    // Added mobile keyboard touch controls to fix game on phones and tablets
+    if (upBtn) {
+        upBtn.addEventListener("click", function() {
+            if (snake.direction !== DOWN) snake.direction = UP;
+        });
+    }
+    if (downBtn) {
+        downBtn.addEventListener("click", function() {
+            if (snake.direction !== UP) snake.direction = DOWN;
+        });
+    }
+    if (leftBtn) {
+        leftBtn.addEventListener("click", function() {
+            if (snake.direction !== RIGHT) snake.direction = LEFT;
+        });
+    }
+    if (rightBtn) {
+        rightBtn.addEventListener("click", function() {
+            if (snake.direction !== LEFT) snake.direction = RIGHT;
         });
     }
 });
