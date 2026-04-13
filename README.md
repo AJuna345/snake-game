@@ -71,7 +71,7 @@ Wireframe images for Snake Game
 ![Home/Start](images/Wireframe-1.jpg)
 ![Gameboard](images/Wireframe-2.jpg)
 ![How to Play](images/Wireframe-3.jpg)
-![Leaderboard](images/Wireframe-4.jpg)
+![Leaderboard](images/Wireframe%20-4.jpg)
 ![Game Over](images/Wireframe-5.jpg)
 
 ## Project Features
