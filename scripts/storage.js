@@ -1,4 +1,4 @@
-// Save and get player information and settings like theme and game speed
+// Load and save player settings like theme and game speed
 // Save the high score and get them for the leaderboard
 
 export function getPlayerName() {
@@ -26,10 +26,12 @@ export function saveSpeed(speed) {
   localStorage.setItem('snakeSpeed', String(speed));
 }
 
+// Get the saved Leaderboard scores. Return an empty list if there are no saved scores
 export function getLeaderboard() {
   return JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
 }
 
+// Save the player's new score and sort the leaderboard. Only keep the Top 10 player scores
 export function saveHighScore(name, latestScore) {
   let highScores = getLeaderboard();
   highScores.push({ name: name || 'Anonymous', score: latestScore });
