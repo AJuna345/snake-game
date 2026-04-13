@@ -193,6 +193,23 @@ a[target="_blank"] {
     text-decoration: underline;
 }
 
+/* Hide keyboard touch controls on desktop */
+#mobileControls {
+    display: none;
+}
+
+/* Show keybaord touch controls on smaller screens */
+@media (max-width: 768px) {
+    #mobileControls {
+        display: block;
+    }
+
+    #mobileControls .btn {
+        min-width: 60px;
+        font-size: 1.5rem;
+    }
+}
+
 /* Include a reduced-motion friendly animation or transition (respect prefers-reduced-motion) */
 @media (prefers-reduced-motion: reduce) {
   *,
