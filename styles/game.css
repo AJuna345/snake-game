@@ -27,6 +27,7 @@ body.theme-neon {
     --border-color: #00ffff;
 }
 
+/* Set the font, colors, and spacing for the game */
 body {
     font-family: 'DotGothic16', 'Courier New', monospace;
     text-align: center;
@@ -37,6 +38,7 @@ body {
     padding-bottom: 50px;
 }
 
+/* Make the snake game buttons to look more like arcade buttons */
 .arcade-button {
     font-family: 'DotGothic16', 'Courier New', monospace;
     display: inline-block;
@@ -107,6 +109,7 @@ canvas {
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
+/* Hide the Game Over box until the game ends */
 #gameOverScreen.hidden {
     display: block !important;
     opacity: 0;
@@ -131,7 +134,7 @@ body.theme-garfield {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Keep navbar links synced with the active theme */
+/* Make the navbar use the theme colors */
 .navbar {
     background-color: var(--bg-color);
 }
@@ -163,6 +166,7 @@ kbd {
     font-size: 0.9rem;
 }
 
+/* Make the links at the bottom match the theme */
 footer .btn-outline-secondary {
     font-family: 'DotGothic16', 'Courier New', monospace;
     font-size: 12px;
@@ -176,19 +180,20 @@ footer .btn-outline-secondary:hover {
 }
 
 /* W3C Selectors spec: https://www.w3.org/TR/selectors-4/#the-nth-child-pseudo */
-/* Selects odd-numbered list items */
+/* Advanced Selector: Selects odd-numbered list items */
 /* Changes the opacity of every other control item to make it look more interesting */
 .card ul li:nth-child(odd) {
-    opacity: 0.90;
+    opacity: 0.85;
 }
 
 /* W3C Selectors spec: https://www.w3.org/TR/selectors-4/#attribute-selectors */
-/* Finds links with target="_blank" */
-/* Highlights links that open in a new tab */
+/* Advanced Selector: Finds links with target="_blank" */
+/* Highlights links that open a new tab */
 a[target="_blank"] {
     text-decoration: underline;
 }
 
+/* Include a reduced-motion friendly animation or transition (respect prefers-reduced-motion) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
